@@ -3,64 +3,27 @@
 #include <iostream>
 
 #include "raylib.h"
+#include "VisualInstance.h"
+#include "StaticBody.h"
 
+//screen width and height variables
 const int screenWidth = 896;
 const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 
 
-class Object {
-private:
-	Vector2 position;
-	Vector2 size;
-	Color color;
-public:
-	Object(Vector2 position, Vector2 size, Color color) {
-		this->position = position;
-		this->size = size;
-		this->color = color;
-	}
-
-	Vector2 getPosition() {
-		return position;
-	}
-
-	Vector2 getSize() {
-		return size;
-	}
-
-	Color getColor() {
-		return color;
-	}
-
-	void setPosition(Vector2 position) {
-		this->position = position;
-	}
-
-	void setColor(Color color) {
-		this->color = color;
-	}
-
-	void setSize(Vector2 size) {
-		this->size = size;
-	}
-
-	void draw() {
-		DrawRectangle(this->position.x, this->position.y, this->size.x, this->size.y, this->color);
-	}
-};
-
 int main() {
 	//initialisation
-	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
-	InitWindow(screenWidth, screenHeight, "Cellular automata");
-	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT); //set window flags
+	InitWindow(screenWidth, screenHeight, "Cellular automata"); //init window
+	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); //init render texture
 	SetTargetFPS(60); // Set our game to run at 60 frames-per-second
 
 	//init
 	
-	Object square(Vector2 {36, 36}, Vector2 {16, 16}, BLACK);
+	VisualInstance square(Vector2 {56, 56}, Vector2 {16, 16}, RED);
+	StaticBody staticBody(Vector2 {56, 56}, Vector2 {16, 16});
 
 	while (!WindowShouldClose())
 	{
@@ -71,8 +34,9 @@ int main() {
 
 		BeginTextureMode(target); //begin drawing to render texture
 
-		ClearBackground(RAYWHITE); //clear render texture
+		ClearBackground(WHITE); //clear render texture
 		square.draw();
+		staticBody.drawCollisionWireframe();
 
 		EndTextureMode(); //end drawing to render texture
 
