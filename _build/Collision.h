@@ -24,4 +24,15 @@ public:
 	void drawCollisionBox() {
 		DrawRectangleLines(position.x, position.y, size.x, size.y, color);
 	}
+
+	void update(Player other) {
+		checkCollision(other);
+
+		if (checkCollision(other)) {
+			setColor(BLUE);
+		}
+		else {
+			setColor(RED);
+		}
+	}
 };

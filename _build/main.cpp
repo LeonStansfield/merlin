@@ -67,6 +67,8 @@ int main() {
 	Player player = Player(Vector2{ 0,  0 }, Vector2{ 16,  16 }, BLACK, Vector2{ 0,  0 });
 
 	Collision box = Collision(Vector2{ 32,  32 }, Vector2{ 16,  16 }, RED);
+	Collision box2 = Collision(Vector2{ 48,  48 }, Vector2{ 16,  16 }, RED);
+	Collision box3 = Collision(Vector2{ 16,  48 }, Vector2{ 16,  16 }, RED);
 
 	while (!WindowShouldClose())
 	{
@@ -74,12 +76,17 @@ int main() {
 
 		player.update();
 
-		if (box.checkCollision(player)) {
-			box.setColor(BLUE);
-		}
-		else {
-			box.setColor(RED);
-		}
+		// WORKING ON COLLISIONS
+		/*
+			Does the player collide with each box (Collision object, as in does the player have a method that checks collisions with all kinematic and collision bodies)
+			Or does each box have a method that checks collisions with the player (KinematicBody object)
+
+			The latter may be more performant as it only checks collisions with kinematic bodies, but the former may be more flexible as it can check collisions with any kinematic or collision body.
+			This may also be confusing as I would have to act on the kinematic bodies in the collision class, which would be a bit weird and backwards.
+		*/
+		box.update(player);
+		box2.update(player);
+		box3.update(player);
 
 		//drawing
 
@@ -88,6 +95,8 @@ int main() {
 		ClearBackground(WHITE); //clear render texture
 		player.draw();
 		box.draw();
+		box2.draw();
+		box3.draw();
 
 		EndTextureMode(); //end drawing to render texture
 
