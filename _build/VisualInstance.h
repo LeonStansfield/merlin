@@ -1,13 +1,19 @@
 #pragma once
 
+#include "raylib.h"
 #include "Object.h"
 
-class VisualInstance: Object {
-private:
+class VisualInstance : public Object {
+protected:
 	Vector2 size;
 	Color color;
-
 public:
+	VisualInstance() {
+		position = { 0, 0 };
+		size = { 1, 1 };
+		color = WHITE;
+	}
+
 	VisualInstance(Vector2 position, Vector2 size, Color color) {
 		this->position = position;
 		this->size = size;
@@ -18,6 +24,10 @@ public:
 		return size;
 	}
 
+	void setSize(Vector2 size) {
+		this->size = size;
+	}
+
 	Color getColor() {
 		return color;
 	}
@@ -26,11 +36,7 @@ public:
 		this->color = color;
 	}
 
-	void setSize(Vector2 size) {
-		this->size = size;
-	}
-
 	void draw() {
-		DrawRectangle(this->position.x, this->position.y, this->size.x, this->size.y, this->color);
+		DrawRectangle(position.x, position.y, size.x, size.y, color);
 	}
 };

@@ -20,10 +20,10 @@
     <ClInclude Include="VisualInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collidable.h">
+    <ClInclude Include="Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StaticBody.h">
+    <ClInclude Include="KinematicBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
