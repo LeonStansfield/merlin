@@ -4,8 +4,6 @@
 using namespace std;
 
 #include "raylib.h"
-#include "VisualInstance.h"
-#include "KinematicBody.h"
 
 //screen width and height variables
 const int screenWidth = 896;
@@ -13,11 +11,129 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 
+class GameObject {
+public:
+	Vector2 position;
+
+	GameObject() {
+		position = { 0, 0 };
+	}
+
+	GameObject(Vector2 position) {
+		this->position = position;
+	}
+
+	Vector2 getPosition() {
+		return position;
+	}
+
+	void setPosition(Vector2 position) {
+		this->position = position;
+	}
+
+	virtual void update() {
+		printf("cum");
+	}
+};
+
+class VisualInstance : public GameObject {
+public:
+	Vector2 size;
+	Color color;
+
+	VisualInstance() {
+		position = { 0.0, 0.0 };
+		size = { 1, 1 };
+		color = WHITE;
+	}
+
+	VisualInstance(Vector2 position, Vector2 size, Color color) {
+		this->position = position;
+		this->size = size;
+		this->color = color;
+	}
+
+	Vector2 getSize() {
+		return size;
+	}
+
+	void setSize(Vector2 size) {
+		this->size = size;
+	}
+
+	Color getColor() {
+		return color;
+	}
+
+	void setColor(Color color) {
+		this->color = color;
+	}
+
+	void draw() {
+		DrawRectangle(position.x, position.y, size.x, size.y, color);
+	}
+};
+
+class Collision : public VisualInstance {
+public:
+	Collision() {
+		position = { 0.0, 0.0 };
+		size = { 1, 1 };
+		color = MAROON;
+	}
+
+	Collision(Vector2 position, Vector2 size, Color color) {
+		this->position = position;
+		this->size = size;
+		this->color = color;
+	}
+
+	bool checkCollision(Collision other) {
+		return CheckCollisionRecs({ position.x, position.y, size.x, size.y }, { other.position.x, other.position.y, other.size.x, other.size.y });
+	}
+
+	void drawCollisionBox() {
+		DrawRectangleLines(position.x, position.y, size.x, size.y, color);
+	}
+};
+
+class KinematicBody : public Collision {
+public:
+	Vector2 velocity;
+
+	KinematicBody() {
+		position = { 0, 0 };
+		size = { 1, 1 };
+		color = WHITE;
+		velocity = { 0, 0 };
+	}
+
+	KinematicBody(Vector2 position, Vector2 size, Color color, Vector2 velocity) {
+		this->position = position;
+		this->size = size;
+		this->color = color;
+		this->velocity = velocity;
+	}
+
+	Vector2 getVelocity() {
+		return velocity;
+	}
+
+	void setVelocity(Vector2 velocity) {
+		this->velocity = velocity;
+	}
+
+	void move() {
+		position.x += velocity.x;
+		position.y += velocity.y;
+	}
+};
+
 class Player : public KinematicBody {
 public:
 	Player() {
-		position = { 0.0, 0.0 };
-		size = { 16, 16 };
+		position = { 0, 0 };
+		size = { 1, 1 };
 		color = WHITE;
 		velocity = { 0, 0 };
 	}
@@ -29,25 +145,24 @@ public:
 		this->velocity = velocity;
 	}
 
-	void update() {
-		//update velocity
-		if (IsKeyDown(KEY_W)) {
+	void update() override {
+			if (IsKeyDown(KEY_W)) {
 			velocity.y = -1;
 		}
-		else if (IsKeyDown(KEY_S)) {
+			else if (IsKeyDown(KEY_S)) {
 			velocity.y = 1;
 		}
-		else {
+			else {
 			velocity.y = 0;
 		}
 
-		if (IsKeyDown(KEY_A)) {
+			if (IsKeyDown(KEY_A)) {
 			velocity.x = -1;
 		}
-		else if (IsKeyDown(KEY_D)) {
+			else if (IsKeyDown(KEY_D)) {
 			velocity.x = 1;
 		}
-		else {
+			else {
 			velocity.x = 0;
 		}
 
@@ -64,39 +179,37 @@ int main() {
 
 	//init
 
-	Player player = Player(Vector2{ 0,  0 }, Vector2{ 16,  16 }, BLACK, Vector2{ 0,  0 });
+	std::vector<GameObject*> gameObjects;//list of game objects to be processed
+	std::vector<VisualInstance*> visualInstances;//list of visual instances to be drawn
 
-	Collision box = Collision(Vector2{ 32,  32 }, Vector2{ 16,  16 }, RED);
-	Collision box2 = Collision(Vector2{ 48,  48 }, Vector2{ 16,  16 }, RED);
-	Collision box3 = Collision(Vector2{ 16,  48 }, Vector2{ 16,  16 }, RED);
+
+	Player* player = new Player({ 120, 72 }, { 8, 8 }, RED, {0, 0}); //create player
+	gameObjects.push_back(player);
+	visualInstances.push_back(player);
+
+	 
+	Collision* wall = new Collision({ 16, 16 }, { 64, 64 }, BLUE);
+	gameObjects.push_back(wall);
+	visualInstances.push_back(wall);
 
 	while (!WindowShouldClose())
+
 	{
-		//update
-
-		player.update();
-
-		// WORKING ON COLLISIONS
-		/*
-			Does the player collide with each box (Collision object, as in does the player have a method that checks collisions with all kinematic and collision bodies)
-			Or does each box have a method that checks collisions with the player (KinematicBody object)
-
-			The latter may be more performant as it only checks collisions with kinematic bodies, but the former may be more flexible as it can check collisions with any kinematic or collision body.
-			This may also be confusing as I would have to act on the kinematic bodies in the collision class, which would be a bit weird and backwards.
-		*/
-		box.update(player);
-		box2.update(player);
-		box3.update(player);
+		//process
+		for (GameObject* gameObject : gameObjects)
+		{
+			gameObject->update();
+		}
 
 		//drawing
 
 		BeginTextureMode(target); //begin drawing to render texture
 
-		ClearBackground(WHITE); //clear render texture
-		player.draw();
-		box.draw();
-		box2.draw();
-		box3.draw();
+			ClearBackground(WHITE); //clear render texture
+
+			for (VisualInstance* visualInstance : visualInstances) {
+				visualInstance->draw();
+			}
 
 		EndTextureMode(); //end drawing to render texture
 
