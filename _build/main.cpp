@@ -32,7 +32,6 @@ public:
 	}
 
 	virtual void update() {
-		printf("cum");
 	}
 };
 
@@ -181,16 +180,20 @@ int main() {
 
 	std::vector<GameObject*> gameObjects;//list of game objects to be processed
 	std::vector<VisualInstance*> visualInstances;//list of visual instances to be drawn
+	std::vector<Collision*> collisionObjects;//list of collisionObjects to be checked
+	std::vector<KinematicBody*> kinematicBodies;//list of kinematic bodies to be moved
 
 
 	Player* player = new Player({ 120, 72 }, { 8, 8 }, RED, {0, 0}); //create player
 	gameObjects.push_back(player);
 	visualInstances.push_back(player);
-
+	collisionObjects.push_back(player);
+	kinematicBodies.push_back(player);
 	 
 	Collision* wall = new Collision({ 16, 16 }, { 64, 64 }, BLUE);
 	gameObjects.push_back(wall);
 	visualInstances.push_back(wall);
+	collisionObjects.push_back(wall);
 
 	while (!WindowShouldClose())
 
@@ -199,6 +202,19 @@ int main() {
 		for (GameObject* gameObject : gameObjects)
 		{
 			gameObject->update();
+		}
+
+		//for kinematic body, check if it is colliding with a collision object.
+		for (KinematicBody* kinematicBody : kinematicBodies) {
+			for (Collision* collisionObject : collisionObjects) {
+				if (kinematicBody->checkCollision(*collisionObject)) {
+					kinematicBody->setVelocity({ 0, 0 });
+					kinematicBody->setColor(RED);
+				}
+				else {
+					kinematicBody->setColor(GREEN);
+				}
+			}
 		}
 
 		//drawing
