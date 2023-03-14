@@ -11,6 +11,7 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 
+
 class GameObject {
 public:
 	Vector2 position;
@@ -94,6 +95,7 @@ public:
 	void drawCollisionBox() {
 		DrawRectangleLines(position.x, position.y, size.x, size.y, color);
 	}
+
 };
 
 class KinematicBody : public Collision {
@@ -122,9 +124,49 @@ public:
 		this->velocity = velocity;
 	}
 
+	void resolveCollision(Collision& other) {
+		/*
+		// Assume rect1 and rect2 are objects with x, y, width and height properties
+		// Assume Vector2 is a class with x and y properties and some useful methods
+
+		// Define a function to get the axes from a rectangle
+		function getAxes(rect) {
+		  // Get the four corners of the rectangle
+		  let topLeft = new Vector2(rect.x, rect.y);
+		  let topRight = new Vector2(rect.x + rect.width, rect.y);
+		  let bottomRight = new Vector2(rect.x + rect.width, rect.y + rect.height);
+		  let bottomLeft = new Vector2(rect.x, rect.y + rect.height);
+
+		  // Get the four edges as vectors
+		  let left = bottomLeft.subtract(topLeft);
+		  let top = topRight.subtract(topLeft);
+		  let right = bottomRight.subtract(topRight);
+		  let bottom = bottomLeft.subtract(bottomRight);
+
+		  // Return an array of two axes that are perpendicular to two edges
+		  // We only need two because we assume rectangles are parallel to x-y axes
+		  return [left.perpendicular().normalize(), top.perpendicular().normalize()];
+		}
+
+		// Define a function to project a rectangle onto an axis
+		function project(rect, axis) {
+		  // Get the four corners of the rectangle
+		  let topLeft = new Vector2(rect.x, rect.y);
+		  let topRight = new Vector2(rect.x + rect.width, rect.y);
+		  let bottomRight = new Vector2(rect.x + rect.width, rect.y + rect.height);
+		  let bottomLeft = new Vector2(rect.x, rect.y + rect.height);
+
+		  // Project each corner onto the axis and get their dot products
+		  // The dot product is a measure of how much one vector overlaps another
+  */
+	}
+
+
 	void move() {
+
 		position.x += velocity.x;
 		position.y += velocity.y;
+
 	}
 };
 
@@ -184,21 +226,27 @@ int main() {
 	std::vector<KinematicBody*> kinematicBodies;//list of kinematic bodies to be moved
 
 
-	Player* player = new Player({ 120, 72 }, { 8, 8 }, RED, {0, 0}); //create player
+	//declaring all objects in the scene
+	Player* player = new Player({ 120, 64 }, { 8, 8 }, RED, {0, 0}); //create player
 	gameObjects.push_back(player);
 	visualInstances.push_back(player);
 	collisionObjects.push_back(player);
 	kinematicBodies.push_back(player);
 	 
-	Collision* wall = new Collision({ 16, 16 }, { 64, 64 }, BLUE);
+	Collision* wall = new Collision({ 32, 32 }, { 32, 32 }, BLUE);
 	gameObjects.push_back(wall);
 	visualInstances.push_back(wall);
 	collisionObjects.push_back(wall);
 
+	Collision* wall2 = new Collision({ 72, 72 }, { 32, 24 }, BLUE);
+	gameObjects.push_back(wall2);
+	visualInstances.push_back(wall2);
+	collisionObjects.push_back(wall2);
+
 	while (!WindowShouldClose())
 
 	{
-		//process
+		//process all game objects
 		for (GameObject* gameObject : gameObjects)
 		{
 			gameObject->update();
@@ -207,9 +255,13 @@ int main() {
 		//for kinematic body, check if it is colliding with a collision object.
 		for (KinematicBody* kinematicBody : kinematicBodies) {
 			for (Collision* collisionObject : collisionObjects) {
+				if (collisionObject == kinematicBody){
+					continue;
+				}
 				if (kinematicBody->checkCollision(*collisionObject)) {
-					kinematicBody->setVelocity({ 0, 0 });
 					kinematicBody->setColor(RED);
+					kinematicBody->resolveCollision(*collisionObject);
+					break;
 				}
 				else {
 					kinematicBody->setColor(GREEN);
@@ -223,6 +275,7 @@ int main() {
 
 			ClearBackground(WHITE); //clear render texture
 
+			//draw all objects
 			for (VisualInstance* visualInstance : visualInstances) {
 				visualInstance->draw();
 			}
