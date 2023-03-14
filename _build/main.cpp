@@ -125,40 +125,11 @@ public:
 	}
 
 	void resolveCollision(Collision& other) {
-		/*
-		// Assume rect1 and rect2 are objects with x, y, width and height properties
-		// Assume Vector2 is a class with x and y properties and some useful methods
-
-		// Define a function to get the axes from a rectangle
-		function getAxes(rect) {
-		  // Get the four corners of the rectangle
-		  let topLeft = new Vector2(rect.x, rect.y);
-		  let topRight = new Vector2(rect.x + rect.width, rect.y);
-		  let bottomRight = new Vector2(rect.x + rect.width, rect.y + rect.height);
-		  let bottomLeft = new Vector2(rect.x, rect.y + rect.height);
-
-		  // Get the four edges as vectors
-		  let left = bottomLeft.subtract(topLeft);
-		  let top = topRight.subtract(topLeft);
-		  let right = bottomRight.subtract(topRight);
-		  let bottom = bottomLeft.subtract(bottomRight);
-
-		  // Return an array of two axes that are perpendicular to two edges
-		  // We only need two because we assume rectangles are parallel to x-y axes
-		  return [left.perpendicular().normalize(), top.perpendicular().normalize()];
-		}
-
-		// Define a function to project a rectangle onto an axis
-		function project(rect, axis) {
-		  // Get the four corners of the rectangle
-		  let topLeft = new Vector2(rect.x, rect.y);
-		  let topRight = new Vector2(rect.x + rect.width, rect.y);
-		  let bottomRight = new Vector2(rect.x + rect.width, rect.y + rect.height);
-		  let bottomLeft = new Vector2(rect.x, rect.y + rect.height);
-
-		  // Project each corner onto the axis and get their dot products
-		  // The dot product is a measure of how much one vector overlaps another
-  */
+		/*implement collision resolution tecniques here.
+		Alternatively, use a pget() system similar to pico 8, where kinematic bodies should check to the right and left of themselves, and if there is something there, do not allow further movement left or right.
+		If the player is actively INSIDE the object, then move the player out of the object by checking by how far on the axis that the player is moving.
+		*/
+		
 	}
 
 
@@ -188,20 +159,20 @@ public:
 
 	void update() override {
 			if (IsKeyDown(KEY_W)) {
-			velocity.y = -1;
+			velocity.y = -2;
 		}
 			else if (IsKeyDown(KEY_S)) {
-			velocity.y = 1;
+			velocity.y = 2;
 		}
 			else {
 			velocity.y = 0;
 		}
 
 			if (IsKeyDown(KEY_A)) {
-			velocity.x = -1;
+			velocity.x = -2;
 		}
 			else if (IsKeyDown(KEY_D)) {
-			velocity.x = 1;
+			velocity.x = 2;
 		}
 			else {
 			velocity.x = 0;
@@ -216,7 +187,7 @@ int main() {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT); //set window flags
 	InitWindow(screenWidth, screenHeight, "Merlin Engine"); //init window
 	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); //init render texture
-	SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+	SetTargetFPS(30); // Set our game to run at 60 frames-per-second
 
 	//init
 
@@ -238,7 +209,7 @@ int main() {
 	visualInstances.push_back(wall);
 	collisionObjects.push_back(wall);
 
-	Collision* wall2 = new Collision({ 72, 72 }, { 32, 24 }, BLUE);
+	Collision* wall2 = new Collision({ 72, 96 }, { 32, 24 }, BLUE);
 	gameObjects.push_back(wall2);
 	visualInstances.push_back(wall2);
 	collisionObjects.push_back(wall2);
