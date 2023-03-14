@@ -4,6 +4,10 @@
 using namespace std;
 
 #include "raylib.h"
+#include "GameObject.h"
+#include "VisualInstance.h"
+#include "Collision.h"
+#include "KinematicBody.h"
 
 //screen width and height variables
 const int screenWidth = 896;
@@ -11,135 +15,6 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 
-
-class GameObject {
-public:
-	Vector2 position;
-
-	GameObject() {
-		position = { 0, 0 };
-	}
-
-	GameObject(Vector2 position) {
-		this->position = position;
-	}
-
-	Vector2 getPosition() {
-		return position;
-	}
-
-	void setPosition(Vector2 position) {
-		this->position = position;
-	}
-
-	virtual void update() {
-	}
-};
-
-class VisualInstance : public GameObject {
-public:
-	Vector2 size;
-	Color color;
-
-	VisualInstance() {
-		position = { 0.0, 0.0 };
-		size = { 1, 1 };
-		color = WHITE;
-	}
-
-	VisualInstance(Vector2 position, Vector2 size, Color color) {
-		this->position = position;
-		this->size = size;
-		this->color = color;
-	}
-
-	Vector2 getSize() {
-		return size;
-	}
-
-	void setSize(Vector2 size) {
-		this->size = size;
-	}
-
-	Color getColor() {
-		return color;
-	}
-
-	void setColor(Color color) {
-		this->color = color;
-	}
-
-	void draw() {
-		DrawRectangle(position.x, position.y, size.x, size.y, color);
-	}
-};
-
-class Collision : public VisualInstance {
-public:
-	Collision() {
-		position = { 0.0, 0.0 };
-		size = { 1, 1 };
-		color = MAROON;
-	}
-
-	Collision(Vector2 position, Vector2 size, Color color) {
-		this->position = position;
-		this->size = size;
-		this->color = color;
-	}
-
-	bool checkCollision(Collision other) {
-		return CheckCollisionRecs({ position.x, position.y, size.x, size.y }, { other.position.x, other.position.y, other.size.x, other.size.y });
-	}
-
-	void drawCollisionBox() {
-		DrawRectangleLines(position.x, position.y, size.x, size.y, color);
-	}
-
-};
-
-class KinematicBody : public Collision {
-public:
-	Vector2 velocity;
-
-	KinematicBody() {
-		position = { 0, 0 };
-		size = { 1, 1 };
-		color = WHITE;
-		velocity = { 0, 0 };
-	}
-
-	KinematicBody(Vector2 position, Vector2 size, Color color, Vector2 velocity) {
-		this->position = position;
-		this->size = size;
-		this->color = color;
-		this->velocity = velocity;
-	}
-
-	Vector2 getVelocity() {
-		return velocity;
-	}
-
-	void setVelocity(Vector2 velocity) {
-		this->velocity = velocity;
-	}
-
-	void resolveCollision(Collision& other) {
-		/*implement collision resolution tecniques here.
-		Alternatively, use a pget() system similar to pico 8, where kinematic bodies should check to the right and left of themselves, and if there is something there, do not allow further movement left or right.
-		If the player is actively INSIDE the object, then move the player out of the object by checking by how far on the axis that the player is moving.
-		*/
-		
-	}
-
-
-	void move() {
-
-		position.x += velocity.x;
-		position.y += velocity.y;
-
-	}
-};
 
 class Player : public KinematicBody {
 public:
@@ -158,23 +33,23 @@ public:
 	}
 
 	void update() override {
-			if (IsKeyDown(KEY_W)) {
+		if (IsKeyDown(KEY_W)) {
 			velocity.y = -2;
 		}
-			else if (IsKeyDown(KEY_S)) {
+		else if (IsKeyDown(KEY_S)) {
 			velocity.y = 2;
 		}
-			else {
+		else {
 			velocity.y = 0;
 		}
 
-			if (IsKeyDown(KEY_A)) {
+		if (IsKeyDown(KEY_A)) {
 			velocity.x = -2;
 		}
-			else if (IsKeyDown(KEY_D)) {
+		else if (IsKeyDown(KEY_D)) {
 			velocity.x = 2;
 		}
-			else {
+		else {
 			velocity.x = 0;
 		}
 
@@ -187,7 +62,7 @@ int main() {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT); //set window flags
 	InitWindow(screenWidth, screenHeight, "Merlin Engine"); //init window
 	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); //init render texture
-	SetTargetFPS(30); // Set our game to run at 60 frames-per-second
+	SetTargetFPS(30); // Set our game to run at 30 frames-per-second
 
 	//init
 
@@ -209,7 +84,7 @@ int main() {
 	visualInstances.push_back(wall);
 	collisionObjects.push_back(wall);
 
-	Collision* wall2 = new Collision({ 72, 96 }, { 32, 24 }, BLUE);
+	Collision* wall2 = new Collision({ 72, 96 }, { 48, 24 }, BLUE);
 	gameObjects.push_back(wall2);
 	visualInstances.push_back(wall2);
 	collisionObjects.push_back(wall2);
@@ -231,7 +106,7 @@ int main() {
 				}
 				if (kinematicBody->checkCollision(*collisionObject)) {
 					kinematicBody->setColor(RED);
-					kinematicBody->resolveCollision(*collisionObject);
+					//kinematicBody->resolveCollision(*collisionObject);
 					break;
 				}
 				else {

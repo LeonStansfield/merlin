@@ -1,9 +1,10 @@
 #pragma once
 
 #include "raylib.h"
+#include "GameObject.h"
 #include "VisualInstance.h"
 
-class Collision: public VisualInstance {
+class Collision : public VisualInstance {
 public:
 	Collision() {
 		position = { 0.0, 0.0 };
@@ -24,4 +25,5 @@ public:
 	void drawCollisionBox() {
 		DrawRectangleLines(position.x, position.y, size.x, size.y, color);
 	}
+
 };

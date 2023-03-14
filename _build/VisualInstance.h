@@ -1,13 +1,13 @@
 #pragma once
 
 #include "raylib.h"
-#include "Object.h"
+#include "GameObject.h"
 
-class VisualInstance : public Object {
-protected:
+class VisualInstance : public GameObject {
+public:
 	Vector2 size;
 	Color color;
-public:
+
 	VisualInstance() {
 		position = { 0.0, 0.0 };
 		size = { 1, 1 };

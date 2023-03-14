@@ -2,15 +2,15 @@
 
 #include "raylib.h"
 
-class Object {
-protected:
-	Vector2 position;
+class GameObject {
 public:
-	Object() {
+	Vector2 position;
+
+	GameObject() {
 		position = { 0, 0 };
 	}
 
-	Object(Vector2 position) {
+	GameObject(Vector2 position) {
 		this->position = position;
 	}
 
@@ -20,5 +20,8 @@ public:
 
 	void setPosition(Vector2 position) {
 		this->position = position;
+	}
+
+	virtual void update() {
 	}
 };
