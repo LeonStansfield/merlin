@@ -26,5 +26,8 @@
     <ClInclude Include="KinematicBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MerlinMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

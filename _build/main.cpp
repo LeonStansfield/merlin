@@ -106,7 +106,7 @@ int main() {
 				}
 				if (kinematicBody->checkCollision(*collisionObject)) {
 					kinematicBody->setColor(RED);
-					//kinematicBody->resolveCollision(*collisionObject);
+					kinematicBody->resolveCollision(*collisionObject);
 					break;
 				}
 				else {
