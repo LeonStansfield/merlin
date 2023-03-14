@@ -3,9 +3,93 @@
 #include <vector>
 
 #include "raylib.h"
-#include "Collision.h"
 #include "MerlinMath.h"
 
+class GameObject {
+public:
+    Vector2 position;
+
+    GameObject() {
+        position = { 0, 0 };
+    }
+
+    GameObject(Vector2 position) {
+        this->position = position;
+    }
+
+    Vector2 getPosition() {
+        return position;
+    }
+
+    void setPosition(Vector2 position) {
+        this->position = position;
+    }
+
+    virtual void update() {
+    }
+};
+
+class VisualInstance : public GameObject {
+public:
+    Vector2 size;
+    Color color;
+
+    VisualInstance() {
+        position = { 0.0, 0.0 };
+        size = { 1, 1 };
+        color = WHITE;
+    }
+
+    VisualInstance(Vector2 position, Vector2 size, Color color) {
+        this->position = position;
+        this->size = size;
+        this->color = color;
+    }
+
+    Vector2 getSize() {
+        return size;
+    }
+
+    void setSize(Vector2 size) {
+        this->size = size;
+    }
+
+    Color getColor() {
+        return color;
+    }
+
+    void setColor(Color color) {
+        this->color = color;
+    }
+
+    void draw() {
+        DrawRectangle(position.x, position.y, size.x, size.y, color);
+    }
+};
+
+class Collision : public VisualInstance {
+public:
+    Collision() {
+        position = { 0.0, 0.0 };
+        size = { 1, 1 };
+        color = MAROON;
+    }
+
+    Collision(Vector2 position, Vector2 size, Color color) {
+        this->position = position;
+        this->size = size;
+        this->color = color;
+    }
+
+    bool checkCollision(Collision other) {
+        return CheckCollisionRecs({ position.x, position.y, size.x, size.y }, { other.position.x, other.position.y, other.size.x, other.size.y });
+    }
+
+    void drawCollisionBox() {
+        DrawRectangleLines(position.x, position.y, size.x, size.y, color);
+    }
+
+};
 
 class KinematicBody : public Collision {
 public:

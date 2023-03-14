@@ -181,11 +181,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="KinematicBody.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MerlinClass.h" />
     <ClInclude Include="MerlinMath.h" />
-    <ClInclude Include="VisualInstance.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

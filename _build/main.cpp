@@ -4,10 +4,8 @@
 using namespace std;
 
 #include "raylib.h"
-#include "GameObject.h"
-#include "VisualInstance.h"
-#include "Collision.h"
-#include "KinematicBody.h"
+#include "MerlinClass.h"
+#include "MerlinMath.h"
 
 //screen width and height variables
 const int screenWidth = 896;
@@ -79,12 +77,12 @@ int main() {
 	collisionObjects.push_back(player);
 	kinematicBodies.push_back(player);
 	 
-	Collision* wall = new Collision({ 32, 32 }, { 32, 32 }, BLUE);
+	Collision* wall = new Collision({ 48, 24 }, { 32, 32 }, BLUE);
 	gameObjects.push_back(wall);
 	visualInstances.push_back(wall);
 	collisionObjects.push_back(wall);
 
-	Collision* wall2 = new Collision({ 72, 96 }, { 48, 24 }, BLUE);
+	Collision* wall2 = new Collision({ 32, 80 }, { 64, 24 }, BLUE);
 	gameObjects.push_back(wall2);
 	visualInstances.push_back(wall2);
 	collisionObjects.push_back(wall2);
