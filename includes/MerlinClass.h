@@ -25,12 +25,13 @@ public:
         this->position = position;
     }
 
-    virtual void update() {
+    virtual void update(vector<GameObject*> gameObjects) {
     }
 };
 
 class VisualInstance : public GameObject {
 public:
+    bool visible = true;
     Vector2 size;
     Color color;
 
@@ -60,6 +61,14 @@ public:
 
     void setColor(Color color) {
         this->color = color;
+    }
+
+    void setVisible(bool visibility) {
+        this->visible = visibility;
+    }
+
+    bool getVisible() {
+        return visible;
     }
 
     void draw() {
@@ -165,6 +174,29 @@ public:
         }
     }
 
+    void processCollisions(vector<GameObject*> gameObjects){
+        //check if colliding with all other objects in the game, and if so, resolve the collision
+		for (GameObject* gameObject : gameObjects)
+		{
+			// Ignore self
+			if (gameObject == this) {
+				continue;
+			}
+
+			// Check if gameObject is collidable and colliding with player
+			Collision* collision = dynamic_cast<Collision*>(gameObject);
+			if (collision != nullptr && collision->checkCollision(*this))
+			{
+				setColor(RED);
+				resolveCollision(*collision);
+				continue;
+			}
+			else {
+				setColor(BLUE);
+			}
+		}
+    }
+
 	void move() {
 
 
@@ -172,4 +204,9 @@ public:
 		position.y += velocity.y;
 
 	}
+
+    void update(vector<GameObject*> gameObjects) override {
+        //check if colliding with all other objects in the game, and if so, resolve the collision
+        processCollisions(gameObjects);
+    }
 };
