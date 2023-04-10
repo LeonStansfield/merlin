@@ -58,6 +58,82 @@ public:
 	}
 };
 
+class tile : public Collision {
+	//tile class, a tile is spawned by the tilemap class and is a collision object.
+	public:
+    // Default constructor
+    tile() {
+        position = { 0, 0 };
+        size = { 8, 8 };
+        color = RED;
+    }
+
+    // Constructor with arguments
+    tile(Vector2 position, Vector2 size, Color color) {
+        this->position = position;
+        this->size = size;
+        this->color = color;
+
+		printf("Tile created at %f, %f\n", position.x, position.y);
+    }
+};
+
+class Tilemap : public GameObject {
+	//Tilemap class, reads tilemap from a file and for each tile spawns a tile object.
+	public:
+	string tilemapPath;
+
+	Tilemap(string tilemapPath) {
+		this->tilemapPath = tilemapPath;
+	}
+
+	void spawnTiles(vector<GameObject*> gameObjects) {
+		//spawn tiles
+		//for each tile in the tilemap file, create a tile object and add it to the game objects array
+		printf("Spawning tiles\n");
+
+		//open tilemap file
+		FILE* tilemapFile = fopen(tilemapPath.c_str(), "r");
+
+		//check if file exists
+		if (tilemapFile == NULL) {
+			printf("Tilemap file not found\n");
+			return;
+		}
+
+		//create tilemap array
+		int tilemapWidth = 16;
+		int tilemapHeight = 16;
+		int tilemap[tilemapWidth][tilemapHeight];
+
+		//read tilemap file to array
+		for (int y = 0; y < tilemapHeight; y++) {
+			for (int x = 0; x < tilemapWidth; x++) {
+				fscanf(tilemapFile, "%d", &tilemap[x][y]);
+			}
+		}
+
+		//close tilemap file
+		fclose(tilemapFile);
+
+		//spawn tiles
+		//for each tile in the tilemap array, create a tile object and add it to the game objects array
+		for (int y = 0; y < tilemapHeight; y++) {
+			for (int x = 0; x < tilemapWidth; x++) {
+				if (tilemap[x][y] == 1) {
+					tile* newTile = new tile( { float(x) * 8, float(y) * 8}, { 8, 8 }, RED);
+					gameObjects.push_back(newTile);
+				}
+			}
+		}
+	}
+
+	void ready(vector<GameObject*> gameObjects) override {
+		spawnTiles(gameObjects);
+	}
+
+};
+
 int main() {
 	//initialisation
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT); //set window flags
@@ -74,11 +150,14 @@ int main() {
 	Player* player = new Player({ 120, 64 }, { 8, 8 }, RED, {0, 0});
 	gameObjects.push_back(player);
 	 
-	Collision* wall = new Collision({ 48, 24 }, { 32, 32 }, BLUE);
-	gameObjects.push_back(wall);
+	Tilemap* tilemap = new Tilemap("C:/Users/leons/Documents/projects/merlin/gameData/tilemap.txt");
+	gameObjects.push_back(tilemap);
 
-	Collision* wall2 = new Collision({ 32, 80 }, { 64, 24 }, BLUE);
-	gameObjects.push_back(wall2);
+	//proccess game objects ready function
+	for (GameObject* gameObject : gameObjects)
+	{
+		gameObject->ready(gameObjects);
+	}
 
 	while (!WindowShouldClose())
 

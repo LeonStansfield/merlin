@@ -25,6 +25,9 @@ public:
         this->position = position;
     }
 
+    virtual void ready(vector<GameObject*> gameObjects) {
+    }
+
     virtual void update(vector<GameObject*> gameObjects) {
     }
 };
