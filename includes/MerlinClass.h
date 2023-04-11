@@ -25,7 +25,7 @@ public:
         this->position = position;
     }
 
-    virtual void ready(vector<GameObject*> gameObjects) {
+    virtual void ready(std::vector<GameObject*>& gameObjects) {
     }
 
     virtual void update(vector<GameObject*> gameObjects) {
@@ -212,4 +212,65 @@ public:
         //check if colliding with all other objects in the game, and if so, resolve the collision
         processCollisions(gameObjects);
     }
+};
+
+class Tile : public Collision
+{
+	// tile class, a tile is spawned by the tilemap class and is a collision object.
+public:
+	// Constructor with arguments
+	Tile(Vector2 position, Vector2 size, Color color)
+	{
+		this->position = position;
+		this->size = size;
+		this->color = color;
+	}
+};
+
+class Tilemap : public GameObject
+{
+private:
+	string tilemapPath;
+	int tileSize;
+	int width;
+	int height;
+
+public:
+
+	Tilemap(string tilemapPath, int tileSize)
+	{
+		this->tilemapPath = tilemapPath;
+		this->tileSize = tileSize;
+	}
+
+	void spawnTiles(std::vector<GameObject*>& gameObjects)
+	{
+        std::ifstream infile(tilemapPath);
+        if (!infile) {
+            std::cerr << "Failed to open file: " << tilemapPath << std::endl;
+            return;
+        }
+
+        // Read in tilemap dimensions
+        infile >> width >> height;
+
+		// Create tile objects for non-empty tiles
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int tileType;
+                infile >> tileType;
+                if (tileType != 0) {
+					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, RED);
+					gameObjects.push_back(tile);
+				}
+            }
+        }
+
+
+	}
+
+	void ready(std::vector<GameObject*>& gameObjects) override
+	{
+		spawnTiles(gameObjects);
+	}
 };
