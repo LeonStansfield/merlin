@@ -1,7 +1,6 @@
 #include <math.h>
 #include <vector>
 #include <iostream>
-#include <fstream>
 using namespace std;
 
 #include "raylib.h"
@@ -68,20 +67,9 @@ public:
 	}
 };
 
-int main()
-{
-	// initialisation
-	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);					   // set window flags
-	InitWindow(screenWidth, screenHeight, "Merlin Engine");						   // init window
-	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); // init render texture
-	SetTargetFPS(30);															   // Set our game to run at 30 frames-per-second
-
-	// init
-
-	std::vector<GameObject *> gameObjects; // list of game objects to be processed
-
+void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objects
-	Player *player = new Player({120, 64}, {8, 8}, RED, {0, 0});
+	Player *player = new Player({64, 64}, {8, 8}, RED, {0, 0});
 	gameObjects.push_back(player);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
@@ -92,47 +80,71 @@ int main()
 	{
 		gameObject->ready(gameObjects);
 	}
+}
+
+void update(std::vector<GameObject*>& gameObjects){
+	// process all game objects
+	for (GameObject *gameObject : gameObjects)
+	{
+		gameObject->update(gameObjects);
+	}
+}
+
+void draw(std::vector<GameObject*>& gameObjects){
+	// draw all objects that are, or inherit from visual instance class
+	for (GameObject *gameObject : gameObjects)
+	{
+		// Check if the object is visible and is a visual instance or a subclass of visual instance
+		VisualInstance *visualInstance = dynamic_cast<VisualInstance *>(gameObject);
+		if (visualInstance != nullptr && visualInstance->getVisible())
+		{
+			visualInstance->draw();
+		}
+	}
+}
+
+int main()
+{
+	// initialisation
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);					   // set window flags
+	InitWindow(screenWidth, screenHeight, "Merlin Engine");						   // init window
+	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); // init render texture
+	SetTargetFPS(30);															   // Set our game to run at 30 frames-per-second
+
+	Camera2D camera = { 0 };
+    camera.target = (Vector2){ 896.0f / 2, 896.0f / 2};
+    camera.offset = (Vector2){ 896/2.0f, 896/2.0f };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
+	std::vector<GameObject *> gameObjects; // list of game objects to be processed
+	
+	ready(gameObjects);
 
 	while (!WindowShouldClose())
 
 	{
-		// process all game objects
-		for (GameObject *gameObject : gameObjects)
-		{
-			gameObject->update(gameObjects);
-		}
+		// update
+		update(gameObjects);
 
 		// drawing
-
 		BeginTextureMode(target); // begin drawing to render texture
-
-		ClearBackground(WHITE); // clear render texture
-
-		// draw all objects that are, or inherit from visual instance class
-		for (GameObject *gameObject : gameObjects)
-		{
-			// Check if the object is visible and is a visual instance or a subclass of visual instance
-			VisualInstance *visualInstance = dynamic_cast<VisualInstance *>(gameObject);
-			if (visualInstance != nullptr && visualInstance->getVisible())
-			{
-				visualInstance->draw();
-			}
-		}
-
+			ClearBackground(WHITE); // clear render texture
+			draw(gameObjects); // draw game objects
 		EndTextureMode(); // end drawing to render texture
 
 		// draw render texture to screen
-		BeginDrawing();			// begin drawing to screen
-		ClearBackground(BLACK); // clear screen
-		DrawTexturePro(target.texture,
-					   Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
-					   Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
-					   Vector2{0, 0},
-					   0.0f,
-					   WHITE); // draw render texture to screen
-
-		DrawFPS(10, 10); // draw fps counter
-
+		BeginDrawing();	// begin drawing to screen
+			ClearBackground(BLACK); // clear screen
+			BeginMode2D(camera); // begin 2d mode
+				DrawTexturePro(target.texture,
+							Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
+							Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
+							Vector2{0, 0},
+							0.0f,
+							WHITE); // draw render texture to screen
+			EndMode2D(); // end 2d mode
+			DrawFPS(10, 10); // draw fps counter
 		EndDrawing(); // end drawing to screen
 	}
 

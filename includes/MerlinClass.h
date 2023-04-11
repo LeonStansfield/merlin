@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <fstream>
 
 #include "raylib.h"
 #include "MerlinMath.h"
