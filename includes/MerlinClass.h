@@ -259,10 +259,14 @@ public:
             for (int x = 0; x < width; x++) {
                 int tileType;
                 infile >> tileType;
-                if (tileType != 0) {
+                if (tileType == 1) {
 					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, RED);
 					gameObjects.push_back(tile);
 				}
+                else if (tileType == 2) {
+                    Tile *tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, GREEN);
+                    gameObjects.push_back(tile);
+                }
             }
         }
 
