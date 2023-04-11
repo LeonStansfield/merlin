@@ -20,16 +20,18 @@ public:
 	{
 		position = {0, 0};
 		size = {1, 1};
+		layer = 1;
 		color = WHITE;
 		velocity = {0, 0};
 	}
 
-	Player(Vector2 position, Vector2 size, Color color, Vector2 velocity)
+	Player(Vector2 position, Vector2 size, int layer, Color color, Vector2 velocity)
 	{
 		this->position = position;
 		this->size = size;
 		this->color = color;
 		this->velocity = velocity;
+		this->layer = layer;
 	}
 
 	void update(vector<GameObject *> gameObjects) override
@@ -69,7 +71,7 @@ public:
 
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objects
-	Player *player = new Player({64, 64}, {8, 8}, RED, {0, 0});
+	Player *player = new Player({64, 64}, {8, 8}, 1, RED, {0, 0});
 	gameObjects.push_back(player);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);

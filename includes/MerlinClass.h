@@ -81,16 +81,21 @@ public:
 };
 
 class Collision : public VisualInstance {
+
 public:
+    int layer = 1;
+
     Collision() {
         position = { 0.0, 0.0 };
         size = { 1, 1 };
+        layer = 1;
         color = MAROON;
     }
 
-    Collision(Vector2 position, Vector2 size, Color color) {
+    Collision(Vector2 position, Vector2 size, int layer, Color color) {
         this->position = position;
         this->size = size;
+        this->layer = layer;
         this->color = color;
     }
 
@@ -102,6 +107,14 @@ public:
         DrawRectangleLines(position.x, position.y, size.x, size.y, color);
     }
 
+    void setLayer(int layer) {
+        this->layer = layer;
+    }
+
+    int getLayer() {
+        return layer;
+    }
+
 };
 
 class KinematicBody : public Collision {
@@ -111,13 +124,15 @@ public:
 	KinematicBody() {
 		position = { 0, 0 };
 		size = { 1, 1 };
+        layer = 1;
 		color = WHITE;
 		velocity = { 0, 0 };
 	}
 
-	KinematicBody(Vector2 position, Vector2 size, Color color, Vector2 velocity) {
+	KinematicBody(Vector2 position, Vector2 size, int layer, Color color, Vector2 velocity) {
 		this->position = position;
 		this->size = size;
+        this->layer = layer;
 		this->color = color;
 		this->velocity = velocity;
 	}
@@ -191,12 +206,16 @@ public:
 			Collision* collision = dynamic_cast<Collision*>(gameObject);
 			if (collision != nullptr && collision->checkCollision(*this))
 			{
-				setColor(RED);
-				resolveCollision(*collision);
-				continue;
+                //if this object is on the same layer as the other object, resolve the collision
+                if ((collision->layer) == this->layer) {
+                    resolveCollision(*collision);
+                    continue;
+                }
+                else {
+                    continue;
+                }
 			}
 			else {
-				setColor(BLUE);
 			}
 		}
     }
@@ -220,10 +239,11 @@ class Tile : public Collision
 	// tile class, a tile is spawned by the tilemap class and is a collision object.
 public:
 	// Constructor with arguments
-	Tile(Vector2 position, Vector2 size, Color color)
+	Tile(Vector2 position, Vector2 size, int layer, Color color)
 	{
 		this->position = position;
 		this->size = size;
+        this->layer = layer;
 		this->color = color;
 	}
 };
@@ -261,11 +281,11 @@ public:
                 int tileType;
                 infile >> tileType;
                 if (tileType == 1) {
-					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, RED);
+					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, 1, RED);
 					gameObjects.push_back(tile);
 				}
                 else if (tileType == 2) {
-                    Tile *tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, GREEN);
+                    Tile *tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, GREEN);
                     gameObjects.push_back(tile);
                 }
             }
@@ -279,3 +299,4 @@ public:
 		spawnTiles(gameObjects);
 	}
 };
+
