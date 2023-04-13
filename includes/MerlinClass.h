@@ -9,9 +9,11 @@
 class GameObject {
 public:
     Vector2 position;
+    int layer;
 
     GameObject() {
         position = { 0, 0 };
+        layer = 0;
     }
 
     GameObject(Vector2 position) {
@@ -114,7 +116,6 @@ public:
     int getLayer() {
         return layer;
     }
-
 };
 
 class KinematicBody : public Collision {

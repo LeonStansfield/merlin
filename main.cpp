@@ -84,11 +84,35 @@ void ready(std::vector<GameObject*>& gameObjects){
 	}
 }
 
+int pget(Vector2 pos, std::vector<GameObject*>& gameObjects) {
+    for (GameObject* gameObject : gameObjects) {
+        Collision* collision = dynamic_cast<Collision*>(gameObject);
+        if (collision != nullptr) {
+            if (CheckCollisionPointRec(pos, { collision->position.x, collision->position.y, collision->size.x, collision->size.y })) {
+                return collision->getLayer();
+            }
+        }
+    }
+    return -1; // no collision found
+}
+
 void update(std::vector<GameObject*>& gameObjects){
 	// process all game objects
 	for (GameObject *gameObject : gameObjects)
 	{
 		gameObject->update(gameObjects);
+	}
+
+    Vector2 mousePos = GetMousePosition();
+	mousePos.x = mousePos.x / 7;
+	mousePos.y = mousePos.y / 7;
+	std::cout << "Mouse position: " << mousePos.x << ", " << mousePos.y << std::endl;
+    int layer = pget(mousePos, gameObjects);
+    if (layer != -1) {
+        std::cout << "Mouse collided with object on layer " << layer << std::endl;
+    }
+	else{
+		std::cout << "Mouse did not collide with any object" << std::endl;
 	}
 }
 
