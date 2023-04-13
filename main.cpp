@@ -13,8 +13,27 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 
+bool pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects) {
+    for (GameObject* gameObject : gameObjects) {
+        Collision* collision = dynamic_cast<Collision*>(gameObject);
+        if (collision != nullptr && collision->getLayer() == layer) {
+            if (CheckCollisionPointRec(pos, { collision->position.x, collision->position.y, collision->size.x, collision->size.y })) {
+                return true;
+            }
+        }
+    }
+    return false; // no collision found with the specified layer
+}
+
+
 class Player : public KinematicBody
 {
+private:
+	bool isGrounded = false;
+	float gravity = 0.15;
+	float fallMultiplier = 2;
+	float jumpVelocity = -3;
+
 public:
 	Player()
 	{
@@ -36,30 +55,82 @@ public:
 
 	void update(vector<GameObject *> gameObjects) override
 	{
-		if (IsKeyDown(KEY_W))
+		//check if the player is grounded
+		if (pget({ position.x + size.x / 2, position.y + size.y + 1 }, 1, gameObjects))
 		{
-			velocity.y = -2;
+			isGrounded = true;
 		}
-		else if (IsKeyDown(KEY_S))
+		else
 		{
-			velocity.y = 2;
+			isGrounded = false;
+		}
+
+		//check if player is on a roof
+		if (pget({ position.x + size.x / 2, position.y - 1 }, 1, gameObjects))
+		{
+			velocity.y = 0;
+		}
+
+		//check if player is on a wall
+		if (pget({ position.x + size.x + 1, position.y + size.y / 2 }, 1, gameObjects))
+		{
+			velocity.x = 0;
+		}
+		else if (pget({ position.x - 1, position.y + size.y / 2 }, 1, gameObjects))
+		{
+			velocity.x = 0;
+		}
+
+		if (!isGrounded) {
+			if (velocity.y <= -0.1) {
+				velocity.y += gravity;
+			}
+			else if (velocity.y > -0.1) {
+				velocity.y += gravity * fallMultiplier;
+			}
 		}
 		else
 		{
 			velocity.y = 0;
 		}
 
+		// check for input
 		if (IsKeyDown(KEY_A))
 		{
-			velocity.x = -2;
+			velocity.x -= 0.3;
 		}
 		else if (IsKeyDown(KEY_D))
 		{
-			velocity.x = 2;
+			velocity.x += 0.3;
 		}
 		else
 		{
-			velocity.x = 0;
+			if (velocity.x > 0.1)
+			{
+				velocity.x -= 0.3;
+			}
+			else if (velocity.x < -0.1)
+			{
+				velocity.x += 0.3;
+			}
+			else
+			{
+				velocity.x = 0;
+			}
+		}
+
+		if (velocity.x > 2)
+		{
+			velocity.x = 2;
+		}
+		else if (velocity.x < -2)
+		{
+			velocity.x = -2;
+		}
+
+		if (IsKeyDown(KEY_SPACE) && isGrounded)
+		{
+			velocity.y = jumpVelocity;
 		}
 
 		move();
@@ -69,21 +140,9 @@ public:
 	}
 };
 
-bool pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects) {
-    for (GameObject* gameObject : gameObjects) {
-        Collision* collision = dynamic_cast<Collision*>(gameObject);
-        if (collision != nullptr && collision->getLayer() == layer) {
-            if (CheckCollisionPointRec(pos, { collision->position.x, collision->position.y, collision->size.x, collision->size.y })) {
-                return true;
-            }
-        }
-    }
-    return false; // no collision found with the specified layer
-}
-
 void ready(std::vector<GameObject*>& gameObjects){
-	// declaring all objects in the scene and adding them to the array of game objects
-	Player *player = new Player({64, 64}, {8, 8}, 1, RED, {0, 0});
+	// declaring all objects in the scene and adding them to the array of game objectsd
+	Player *player = new Player({64, 64}, {8, 8}, 1, BLUE, {0, 0});
 	gameObjects.push_back(player);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
@@ -102,17 +161,6 @@ void update(std::vector<GameObject*>& gameObjects){
 	{
 		gameObject->update(gameObjects);
 	}
-
-    Vector2 mousePos = GetMousePosition();
-	mousePos.x = mousePos.x / 7;
-	mousePos.y = mousePos.y / 7;
-	std::cout << "Mouse position: " << mousePos.x << ", " << mousePos.y << std::endl;
-    if (pget(mousePos, 1, gameObjects)){
-		std::cout << "Collision" << std::endl;
-	}
-	else{
-		std::cout << "No collision" << std::endl;
-	}
 }
 
 void draw(std::vector<GameObject*>& gameObjects){
@@ -125,6 +173,7 @@ void draw(std::vector<GameObject*>& gameObjects){
 		{
 			visualInstance->draw();
 		}
+
 	}
 }
 
