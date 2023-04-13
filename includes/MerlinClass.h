@@ -118,6 +118,13 @@ public:
     }
 };
 
+class Rigidbody : public Collision {
+    public:
+        Vector2 velocity;
+        Vector2 acceleration;
+        float mass;
+};
+
 class KinematicBody : public Collision {
 public:
 	Vector2 velocity;
@@ -252,24 +259,24 @@ public:
 class Tilemap : public GameObject
 {
 private:
-	string tilemapPath;
+	string tileMapPath;
 	int tileSize;
 	int width;
 	int height;
 
 public:
 
-	Tilemap(string tilemapPath, int tileSize)
+	Tilemap(string tileMapPath, int tileSize)
 	{
-		this->tilemapPath = tilemapPath;
+		this->tileMapPath = tileMapPath;
 		this->tileSize = tileSize;
 	}
 
 	void spawnTiles(std::vector<GameObject*>& gameObjects)
 	{
-        std::ifstream infile(tilemapPath);
+        std::ifstream infile(tileMapPath);
         if (!infile) {
-            std::cerr << "Failed to open file: " << tilemapPath << std::endl;
+            std::cerr << "Failed to open file: " << tileMapPath << std::endl;
             return;
         }
 
@@ -300,4 +307,3 @@ public:
 		spawnTiles(gameObjects);
 	}
 };
-
