@@ -168,11 +168,10 @@ void update(std::vector<GameObject*>& gameObjects){
 	}
 
 	// Determine the current room
-	int currentRoomX = playerPosition.x / 128;
-	int currentRoomY = playerPosition.y / 128;
+	int currentRoomX = playerPosition.x / gameScreenWidth; 
+	int currentRoomY = playerPosition.y / gameScreenHeight;
 	// Set the camera offset
-	cameraOffset.x = currentRoomX * 128;
-	cameraOffset.y = currentRoomY * 128;
+	cameraOffset = {float(currentRoomX * 128), float(currentRoomY * 128)};
 
 }
 

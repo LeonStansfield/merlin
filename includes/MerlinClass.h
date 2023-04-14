@@ -78,9 +78,9 @@ public:
     }
 
     void draw(Vector2 camera_offset) {
-        position.x -= camera_offset.x;
-        position.y -= camera_offset.y;
-        DrawRectangle(position.x, position.y, size.x, size.y, color);
+        int drawPositionX = position.x - camera_offset.x;
+        int drawPositionY = position.y - camera_offset.y;
+        DrawRectangle(drawPositionX , drawPositionY, size.x, size.y, color);
     }
 };
 
