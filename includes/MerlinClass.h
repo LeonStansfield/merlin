@@ -77,7 +77,9 @@ public:
         return visible;
     }
 
-    void draw() {
+    void draw(Vector2 camera_offset) {
+        position.x -= camera_offset.x;
+        position.y -= camera_offset.y;
         DrawRectangle(position.x, position.y, size.x, size.y, color);
     }
 };

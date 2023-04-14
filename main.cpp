@@ -12,6 +12,8 @@ const int screenWidth = 896;
 const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
+Vector2 cameraOffset = {0, 0};
+Vector2 playerPosition = {0, 0};
 
 bool pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects) {
     for (GameObject* gameObject : gameObjects) {
@@ -137,6 +139,9 @@ public:
 
 		// check for collisions
 		processCollisions(gameObjects);
+
+		// update player position
+		playerPosition = position;
 	}
 };
 
@@ -155,7 +160,7 @@ void ready(std::vector<GameObject*>& gameObjects){
 	}
 }
 
-void update(std::vector<GameObject*>& gameObjects, Player& player, Camera2D& camera){
+void update(std::vector<GameObject*>& gameObjects){
 	// process all game objects
 	for (GameObject *gameObject : gameObjects)
 	{
@@ -163,15 +168,11 @@ void update(std::vector<GameObject*>& gameObjects, Player& player, Camera2D& cam
 	}
 
 	// Determine the current room
-	int currentRoomX = player.position.x / 128;
-	int currentRoomY = player.position.y / 128;
-
-	// Calculate the center point of the room
-	float cameraX = currentRoomX * screenHeight + (screenHeight / 2);
-	float cameraY = currentRoomY * screenHeight + (screenHeight / 2);
-
-	// Clamp the camera position to the room bounds
-	camera.target = Vector2{ float(cameraX), float(cameraY)};
+	int currentRoomX = playerPosition.x / 128;
+	int currentRoomY = playerPosition.y / 128;
+	// Set the camera offset
+	cameraOffset.x = currentRoomX * 128;
+	cameraOffset.y = currentRoomY * 128;
 
 }
 
@@ -183,7 +184,7 @@ void draw(std::vector<GameObject*>& gameObjects){
 		VisualInstance *visualInstance = dynamic_cast<VisualInstance *>(gameObject);
 		if (visualInstance != nullptr && visualInstance->getVisible())
 		{
-			visualInstance->draw();
+			visualInstance->draw(cameraOffset);
 		}
 
 	}
@@ -197,12 +198,6 @@ int main()
 	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); // init render texture
 	SetTargetFPS(30);															   // Set our game to run at 30 frames-per-second
 
-	Camera2D camera = { 0 };
-    camera.target = (Vector2){ 896.0f / 2, 896.0f / 2};
-    camera.offset = (Vector2){ 896/2.0f, 896/2.0f };
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
-
 	std::vector<GameObject *> gameObjects; // list of game objects to be processed
 	
 	ready(gameObjects);
@@ -211,7 +206,7 @@ int main()
 
 	{
 		// update
-		update(gameObjects, *dynamic_cast<Player *>(gameObjects[0]), camera);
+		update(gameObjects);
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
@@ -222,14 +217,12 @@ int main()
 		// draw render texture to screen
 		BeginDrawing();	// begin drawing to screen
 			ClearBackground(BLACK); // clear screen
-			BeginMode2D(camera); // begin 2d mode
 				DrawTexturePro(target.texture,
-							Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
-							Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
-							Vector2{0, 0},
-							0.0f,
-							WHITE); // draw render texture to screen
-			EndMode2D(); // end 2d mode
+						Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
+						Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
+						Vector2{0, 0},
+						0.0f,
+						WHITE); // draw render texture to screen
 			DrawFPS(10, 10); // draw fps counter
 		EndDrawing(); // end drawing to screen
 	}
