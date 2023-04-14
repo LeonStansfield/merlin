@@ -155,12 +155,24 @@ void ready(std::vector<GameObject*>& gameObjects){
 	}
 }
 
-void update(std::vector<GameObject*>& gameObjects){
+void update(std::vector<GameObject*>& gameObjects, Player& player, Camera2D& camera){
 	// process all game objects
 	for (GameObject *gameObject : gameObjects)
 	{
 		gameObject->update(gameObjects);
 	}
+
+	// Determine the current room
+	int currentRoomX = player.position.x / 128;
+	int currentRoomY = player.position.y / 128;
+
+	// Calculate the center point of the room
+	float cameraX = currentRoomX * screenHeight + (screenHeight / 2);
+	float cameraY = currentRoomY * screenHeight + (screenHeight / 2);
+
+	// Clamp the camera position to the room bounds
+	camera.target = Vector2{ float(cameraX), float(cameraY)};
+
 }
 
 void draw(std::vector<GameObject*>& gameObjects){
@@ -199,7 +211,7 @@ int main()
 
 	{
 		// update
-		update(gameObjects);
+		update(gameObjects, *dynamic_cast<Player *>(gameObjects[0]), camera);
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
