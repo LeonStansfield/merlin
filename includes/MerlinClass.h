@@ -9,6 +9,7 @@
 
 class GameObject {
 public:
+    virtual ~GameObject() {} // virtual destructor
     Vector2 position;
     int layer;
 
@@ -34,6 +35,10 @@ public:
 
     virtual void update(vector<GameObject*> gameObjects) {
     }
+
+    virtual void end() {
+        delete this;
+    }
 };
 
 class VisualInstance : public GameObject {
@@ -43,6 +48,7 @@ public:
     bool hasTexture;
     Color color;
     string texturePath;
+    Texture2D texture;
 
     VisualInstance() {
         position = { 0.0, 0.0 };
@@ -84,17 +90,30 @@ public:
         return visible;
     }
 
+    //overide ready() to load textures
+    void ready(std::vector<GameObject*>& gameObjects) override {
+        if (hasTexture) {
+            texture = LoadTexture(texturePath.c_str());
+        }
+    }
+
     void draw(Vector2 camera_offset) {
         if (!visible) return;
         int drawPositionX = position.x - camera_offset.x;
         int drawPositionY = position.y - camera_offset.y;
         if (hasTexture){
-            DrawTextureEx(LoadTexture(texturePath.c_str()), { float(drawPositionX), float(drawPositionY) }, 0, 1, color);
-            return;
+            DrawTexture(texture, drawPositionX, drawPositionY, color);
         }
         else {
             DrawRectangle(drawPositionX , drawPositionY, size.x, size.y, color);
         }
+    }
+
+    void end() override {
+        if (hasTexture) {
+            UnloadTexture(texture);
+        }
+        delete this;
     }
 };
 

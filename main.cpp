@@ -152,7 +152,7 @@ public:
 
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
-	Player *player = new Player({64, 64}, {8, 8}, 1, false, blue, "", {0, 0});
+	Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});
 	gameObjects.push_back(player);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
@@ -194,6 +194,14 @@ void draw(std::vector<GameObject*>& gameObjects){
 	}
 }
 
+void end(std::vector<GameObject*>& gameObjects){
+	// draw all objects that are, or inherit from visual instance class
+	for (GameObject *gameObject : gameObjects)
+	{
+		gameObject->end();
+	}
+}
+
 int main()
 {
 	// initialisation
@@ -232,6 +240,7 @@ int main()
 	}
 
 	// deinitialisation
+	end(gameObjects);
 	CloseWindow(); // close window and openGL context
 	return 0;
 }
