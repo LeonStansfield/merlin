@@ -117,6 +117,63 @@ public:
     }
 };
 
+class AnimatedSprite : public VisualInstance {
+public:
+    int frameCount;
+    int currentFrame;
+    int framesCounter;
+    int framesSpeed;
+    Rectangle sourceRec;
+
+    AnimatedSprite() {
+        position = { 0.0, 0.0 };
+        size = { 1, 1 };
+        hasTexture = false;
+        color = WHITE;
+        texturePath = "";
+        frameCount = 1;
+        currentFrame = 0;
+        framesCounter = 0;
+        framesSpeed = 8;
+        sourceRec = { 0.0f, 0.0f, (float)size.x, (float)size.y };
+    }
+
+    AnimatedSprite(Vector2 position, Vector2 size, bool hasTexture, Color color, string texturePath, int frameCount, int framesSpeed) {
+        this->position = position;
+        this->size = size;
+        this->hasTexture = hasTexture;
+        this->color = color;
+        this->texturePath = texturePath;
+        this->frameCount = frameCount;
+        this->framesSpeed = framesSpeed;
+        currentFrame = 0;
+        framesCounter = 0;
+        sourceRec = { 0.0f, 0.0f, (float)size.x, (float)size.y };
+    }
+
+    void update(vector<GameObject*> gameObjects) override {
+        framesCounter++;
+        if (framesCounter >= (60 / framesSpeed)) {
+            framesCounter = 0;
+            currentFrame++;
+            if (currentFrame > frameCount - 1) currentFrame = 0;
+            sourceRec.x = (float)currentFrame * (float)size.x;
+        }
+    }
+
+    void draw(Vector2 camera_offset) {
+        if (!visible) return;
+        int drawPositionX = position.x - camera_offset.x;
+        int drawPositionY = position.y - camera_offset.y;
+        if (hasTexture) {
+            DrawTextureRec(texture, sourceRec, { float(drawPositionX), float(drawPositionY) }, color);
+        }
+        else {
+            DrawRectangle(drawPositionX, drawPositionY, size.x, size.y, color);
+        }
+    }
+};
+
 class Collision : public VisualInstance {
 
 public:
