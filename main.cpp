@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "raylib.h"
+#include "includes/MerlinResources.h"
 #include "includes/MerlinClass.h"
 #include "includes/MerlinMath.h"
 
@@ -42,15 +43,19 @@ public:
 		position = {0, 0};
 		size = {1, 1};
 		layer = 1;
+		hasTexture = false;
 		color = WHITE;
+		texturePath = "";
 		velocity = {0, 0};
 	}
 
-	Player(Vector2 position, Vector2 size, int layer, Color color, Vector2 velocity)
+	Player(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity)
 	{
 		this->position = position;
 		this->size = size;
+		this->hasTexture = hasTexture;
 		this->color = color;
+		this->texturePath = texturePath;
 		this->velocity = velocity;
 		this->layer = layer;
 	}
@@ -147,7 +152,7 @@ public:
 
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
-	Player *player = new Player({64, 64}, {8, 8}, 1, BLUE, {0, 0});
+	Player *player = new Player({64, 64}, {8, 8}, 1, false, blue, "", {0, 0});
 	gameObjects.push_back(player);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
@@ -209,13 +214,13 @@ int main()
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
-			ClearBackground(WHITE); // clear render texture
+			ClearBackground(white); // clear render texture
 			draw(gameObjects); // draw game objects
 		EndTextureMode(); // end drawing to render texture
 
 		// draw render texture to screen
 		BeginDrawing();	// begin drawing to screen
-			ClearBackground(BLACK); // clear screen
+			ClearBackground(black); // clear screen
 				DrawTexturePro(target.texture,
 						Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
 						Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},

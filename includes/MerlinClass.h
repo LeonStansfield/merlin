@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "raylib.h"
+#include "MerlinResources.h"
 #include "MerlinMath.h"
 
 class GameObject {
@@ -39,18 +40,24 @@ class VisualInstance : public GameObject {
 public:
     bool visible = true;
     Vector2 size;
+    bool hasTexture;
     Color color;
+    string texturePath;
 
     VisualInstance() {
         position = { 0.0, 0.0 };
         size = { 1, 1 };
+        hasTexture = false;
         color = WHITE;
+        texturePath = "";
     }
 
-    VisualInstance(Vector2 position, Vector2 size, Color color) {
+    VisualInstance(Vector2 position, Vector2 size, bool hasTexture, Color color, string texturePath) {
         this->position = position;
         this->size = size;
+        this->hasTexture = hasTexture;
         this->color = color;
+        this->texturePath = texturePath;
     }
 
     Vector2 getSize() {
@@ -78,9 +85,16 @@ public:
     }
 
     void draw(Vector2 camera_offset) {
+        if (!visible) return;
         int drawPositionX = position.x - camera_offset.x;
         int drawPositionY = position.y - camera_offset.y;
-        DrawRectangle(drawPositionX , drawPositionY, size.x, size.y, color);
+        if (hasTexture){
+            DrawTextureEx(LoadTexture(texturePath.c_str()), { float(drawPositionX), float(drawPositionY) }, 0, 1, color);
+            return;
+        }
+        else {
+            DrawRectangle(drawPositionX , drawPositionY, size.x, size.y, color);
+        }
     }
 };
 
@@ -93,14 +107,18 @@ public:
         position = { 0.0, 0.0 };
         size = { 1, 1 };
         layer = 1;
+        hasTexture = false;
         color = MAROON;
+        texturePath = "";
     }
 
-    Collision(Vector2 position, Vector2 size, int layer, Color color) {
+    Collision(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath) {
         this->position = position;
         this->size = size;
         this->layer = layer;
+        this->hasTexture = hasTexture;
         this->color = color;
+        this->texturePath = texturePath;
     }
 
     bool checkCollision(Collision other) {
@@ -135,15 +153,19 @@ public:
 		position = { 0, 0 };
 		size = { 1, 1 };
         layer = 1;
+        hasTexture = false;
 		color = WHITE;
+        texturePath = "";
 		velocity = { 0, 0 };
 	}
 
-	KinematicBody(Vector2 position, Vector2 size, int layer, Color color, Vector2 velocity) {
+	KinematicBody(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity) {
 		this->position = position;
 		this->size = size;
         this->layer = layer;
+        this->hasTexture = hasTexture;
 		this->color = color;
+        this->texturePath = texturePath;
 		this->velocity = velocity;
 	}
 
@@ -249,13 +271,15 @@ class Tile : public Collision
 	// tile class, a tile is spawned by the tilemap class and is a collision object.
 public:
 	// Constructor with arguments
-	Tile(Vector2 position, Vector2 size, int layer, Color color)
-	{
-		this->position = position;
-		this->size = size;
+	Tile(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath)
+    {
+        this->position = position;
+        this->size = size;
         this->layer = layer;
-		this->color = color;
-	}
+        this->hasTexture = hasTexture;
+        this->color = color;
+        this->texturePath = texturePath;
+    }
 };
 
 class Tilemap : public GameObject
@@ -291,11 +315,11 @@ public:
                 int tileType;
                 infile >> tileType;
                 if (tileType == 1) {
-					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, 1, RED);
+					Tile *tile = new Tile({static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize}, {static_cast<float>(tileSize), static_cast<float>(tileSize)}, 1, false, green, "");
 					gameObjects.push_back(tile);
 				}
                 else if (tileType == 2) {
-                    Tile *tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, GREEN);
+                    Tile *tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, orange, "");
                     gameObjects.push_back(tile);
                 }
             }
