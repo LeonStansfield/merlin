@@ -451,3 +451,7 @@ public:
 		spawnTiles(gameObjects);
 	}
 };
+
+class Scene{
+    
+};
