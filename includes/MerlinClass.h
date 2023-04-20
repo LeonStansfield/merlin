@@ -153,14 +153,57 @@ public:
         texture = LoadTexture(texturePath.c_str());
     }
 
+    int getFrameCount() {
+        return frameCount;
+    }
+
+    void setFrameCount(int frameCount) {
+        this->frameCount = frameCount;
+    }
+
+    int getCurrentFrame() {
+        return currentFrame;
+    }
+
+    void setCurrentFrame(int currentFrame) {
+        this->currentFrame = currentFrame;
+    }
+
+    int getFramesCounter() {
+        return framesCounter;
+    }
+
+    void setFramesCounter(int framesCounter) {
+        this->framesCounter = framesCounter;
+    }
+
+    int getFramesSpeed() {
+        return framesSpeed;
+    }
+
+    void setFramesSpeed(int framesSpeed) {
+        this->framesSpeed = framesSpeed;
+    }
+
+    Rectangle getSourceRec() {
+        return sourceRec;
+    }
+
+    void setSourceRec(Rectangle sourceRec) {
+        this->sourceRec = sourceRec;
+    }
+
     void update(vector<GameObject*> gameObjects) override {
         framesCounter++;
         if (framesCounter >= (GetFPS() / framesSpeed)) {
             framesCounter = 0;
             currentFrame++;
             if (currentFrame > frameCount - 1) currentFrame = 0;
-            sourceRec.x = (float)currentFrame * (float)size.x;
-            printf("%f, ", sourceRec.x);
+            float x = (float)currentFrame * (float)size.x;
+            float y = 0.0f;
+            float width = (float)size.x;
+            float height = (float)size.y;
+            setSourceRec({ x, y, width, height });
         }
     }
 
@@ -169,6 +212,7 @@ public:
         float drawPositionX = position.x - camera_offset.x;
         float drawPositionY = position.y - camera_offset.y;
         DrawTextureRec(texture, sourceRec, {drawPositionX, drawPositionY}, color);
+        printf("%f, %f, %f, %f \n", sourceRec.x, sourceRec.y, sourceRec.width, sourceRec.height);
     }
 };
 
