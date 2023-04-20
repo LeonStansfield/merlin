@@ -123,12 +123,13 @@ public:
     int currentFrame;
     int framesCounter;
     int framesSpeed;
+    Texture2D frames[100];
     Rectangle sourceRec;
 
     AnimatedSprite() {
         position = { 0.0, 0.0 };
         size = { 1, 1 };
-        hasTexture = false;
+        hasTexture = true;
         color = WHITE;
         texturePath = "";
         frameCount = 1;
@@ -138,39 +139,36 @@ public:
         sourceRec = { 0.0f, 0.0f, (float)size.x, (float)size.y };
     }
 
-    AnimatedSprite(Vector2 position, Vector2 size, bool hasTexture, Color color, string texturePath, int frameCount, int framesSpeed) {
+    AnimatedSprite(Vector2 position, Vector2 size, string texturePath, int frameCount, int framesSpeed) {
         this->position = position;
         this->size = size;
-        this->hasTexture = hasTexture;
-        this->color = color;
+        this->hasTexture = true;
+        this->color = WHITE;
         this->texturePath = texturePath;
         this->frameCount = frameCount;
         this->framesSpeed = framesSpeed;
         currentFrame = 0;
         framesCounter = 0;
         sourceRec = { 0.0f, 0.0f, (float)size.x, (float)size.y };
+        texture = LoadTexture(texturePath.c_str());
     }
 
     void update(vector<GameObject*> gameObjects) override {
         framesCounter++;
-        if (framesCounter >= (60 / framesSpeed)) {
+        if (framesCounter >= (GetFPS() / framesSpeed)) {
             framesCounter = 0;
             currentFrame++;
             if (currentFrame > frameCount - 1) currentFrame = 0;
             sourceRec.x = (float)currentFrame * (float)size.x;
+            printf("%f, ", sourceRec.x);
         }
     }
 
     void draw(Vector2 camera_offset) {
         if (!visible) return;
-        int drawPositionX = position.x - camera_offset.x;
-        int drawPositionY = position.y - camera_offset.y;
-        if (hasTexture) {
-            DrawTextureRec(texture, sourceRec, { float(drawPositionX), float(drawPositionY) }, color);
-        }
-        else {
-            DrawRectangle(drawPositionX, drawPositionY, size.x, size.y, color);
-        }
+        float drawPositionX = position.x - camera_offset.x;
+        float drawPositionY = position.y - camera_offset.y;
+        DrawTextureRec(texture, sourceRec, {drawPositionX, drawPositionY}, color);
     }
 };
 

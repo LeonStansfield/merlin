@@ -135,6 +135,15 @@ public:
 			velocity.x = -2;
 		}
 
+		if (velocity.y > 8)
+		{
+			velocity.y = 8;
+		}
+		else if (velocity.y < -8)
+		{
+			velocity.y = -8;
+		}
+
 		if (IsKeyDown(KEY_SPACE) && isGrounded)
 		{
 			velocity.y = jumpVelocity;
@@ -154,6 +163,9 @@ void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
 	Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});
 	gameObjects.push_back(player);
+
+	AnimatedSprite *animatedSprite = new AnimatedSprite({64, 64}, {8, 8}, "gameData/Textures/anim_test.png", 6, 10);
+	gameObjects.push_back(animatedSprite);
 
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
 	gameObjects.push_back(tilemap);
