@@ -15,6 +15,7 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 Vector2 cameraOffset = {0, 0};
+int playerReference = 0;
 Vector2 playerPosition = {0, 0};
 
 
@@ -29,6 +30,7 @@ void ready(std::vector<GameObject*>& gameObjects){
 	/* */
 	Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});
 	gameObjects.push_back(player);
+	playerReference = gameObjects.size() - 1;
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
 	gameObjects.push_back(tilemap);
 	/* */
@@ -48,7 +50,7 @@ void update(std::vector<GameObject*>& gameObjects){
 	}
 
 	// Determine the current room
-	playerPosition = gameObjects[0]->getPosition(); // player must always be the first object in the game objects array
+	playerPosition = gameObjects[playerReference]->getPosition(); // player must always be the first object in the game objects array
 	int currentRoomX = playerPosition.x / gameScreenWidth; 
 	int currentRoomY = playerPosition.y / gameScreenHeight;
 	// Set the camera offset
