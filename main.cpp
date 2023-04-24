@@ -22,10 +22,10 @@ Vector2 playerPosition = {0, 0};
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
 
-	/*
+	
 	Scene *scene = new Scene("gameData/scenes/test-scene.msd");
 	scene->load(gameObjects);
-	*/
+	
 
 	/* */
 	Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});

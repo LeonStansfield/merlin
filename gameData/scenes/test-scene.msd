@@ -1,11 +1,17 @@
 object
-Player 
+Player
 player
-{64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0}
+{64, 64}
+{6, 8}
+1
+true
+white
+"gameData/Textures/player.png", {0, 0}
 end
 
 object
-Tilemap 
+Tilemap
 tilemap
-"gameData/tilemap.txt", 8
+"gameData/tilemap.txt"
+8
 end

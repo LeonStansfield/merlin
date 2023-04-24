@@ -383,12 +383,92 @@ public:
 
         //read file
         string line;
+        int mode = 0; // 0 = none, 1 = looking for object type, 2 = looking for object name, 3 = looking for object data
+        
+        string objectType;
+        string objectName;
+
+        int objectDataCount = 0;
+        int objectDataCountCurrent = 0;
+        vector<string> objectData;
+
         while (getline(file, line))
         {
-            cout << line << endl;
+            if (mode == 0){
+                if (line == "object"){
+                    printf("object found\n");
+                    mode = 1;
+                    continue;
+                }
+            }
+            if (mode == 1){
+                if (line == "End"){
+                    printf("End found, halting object ingress\n");
+                    objectType = "Player";
+                    mode = 0;
+                    continue;
+                }
+                else if (line == "Tilemap"){
+                    printf("tilemap found\n");
+                    objectType = "Tilemap";
+                    objectDataCount = 2;
+                    mode = 2;
+                    continue;
+                }
+                else if (line == "Player"){
+                    printf("player found\n");
+                    objectType = "Player";
+                    objectDataCount = 7;
+                    mode = 2;
+                    continue;
+                }
+                else{
+                    printf("object type not found, skipping line\n");
+                    continue;
+                }
+            }
+            if (mode == 2){
+                if (line == "end"){
+                    printf("end found. Object was not complete. No object was created.\n");
+                    mode = 0;
+                    continue;
+                }
+                else{
+                    printf("object name found\n");
+                    objectName = line;
+                    mode = 3;
+                    continue;
+                }
+            }
+            if (mode == 3){
+                if (line == "end"){
+                    printf("end found. Object ingress complete.\n");
+                    createObject(gameObjects, objectType, objectName, objectData);
+                    objectDataCountCurrent = 0;
+                    objectDataCount = 0;
+                    objectData.clear();
+                    mode = 0;
+                    continue;
+                }
+                else if (objectDataCount > 0){
+                    printf("object data found\n");
+                    objectData[objectDataCountCurrent] = line;
+                    objectDataCountCurrent++;
+                    objectDataCount--;
+                    continue;
+                }
+            }
         }
 
         //close file
         file.close();
 	}
+
+    void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string> & objectData){
+        cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
+        for (int i = 0; i < objectData.size(); i++){
+            cout << "Data " << i << ": " << objectData[i] << endl;
+        }
+        return;
+    }
 };
