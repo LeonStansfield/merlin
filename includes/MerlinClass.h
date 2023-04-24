@@ -157,13 +157,6 @@ public:
     }
 };
 
-class Rigidbody : public Collision {
-    public:
-        Vector2 velocity;
-        Vector2 acceleration;
-        float mass;
-};
-
 class KinematicBody : public Collision {
 public:
 	Vector2 velocity;
