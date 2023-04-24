@@ -155,6 +155,18 @@ public:
     int getLayer() {
         return layer;
     }
+
+    bool pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects){
+        for (GameObject* gameObject : gameObjects) {
+            Collision* collision = dynamic_cast<Collision*>(gameObject);
+            if (collision != nullptr && collision->getLayer() == layer) {
+                if (CheckCollisionPointRec(pos, { collision->position.x, collision->position.y, collision->size.x, collision->size.y })) {
+                    return true;
+                }
+            }
+        }
+        return false; // no collision found with the specified layer
+    }
 };
 
 class KinematicBody : public Collision {
