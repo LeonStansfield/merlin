@@ -5,8 +5,8 @@ using namespace std;
 
 #include "raylib.h"
 #include "includes/MerlinResources.h"
-#include "includes/MerlinClass.h"
 #include "includes/MerlinMath.h"
+#include "includes/MerlinClass.h"
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -161,11 +161,16 @@ public:
 
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
+
+	Scene *scene = new Scene("gameData/scenes/test-scene.msd");
+	scene->load(gameObjects);
+
+	/* */
 	Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});
 	gameObjects.push_back(player);
-
 	Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
 	gameObjects.push_back(tilemap);
+	/* */
 
 	// proccess game objects ready function
 	for (GameObject *gameObject : gameObjects)

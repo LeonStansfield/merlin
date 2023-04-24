@@ -453,5 +453,36 @@ public:
 };
 
 class Scene{
-    
+private:
+    string filename;
+
+public:
+    Scene(string filename){
+        this->filename = filename;
+    }
+
+	void load(std::vector<GameObject*>& gameObjects)
+    {
+        //load file
+        fstream file;
+        file.open(filename, ios::in);
+        if (!file.is_open())
+        {
+            cout << "Failed to open file: " << filename << endl;
+            return;
+        }
+        else{
+            cout << "File opened successfully: " << filename << endl;
+        }
+
+        //read file
+        string line;
+        while (getline(file, line))
+        {
+            cout << line << endl;
+        }
+
+        //close file
+        file.close();
+	}
 };
