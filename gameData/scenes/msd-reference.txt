@@ -1,0 +1,5 @@
+object -> indicates start of a new object
+Player -> indicates class of the object
+player -> indicates the name of the object
+{64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0} -> indicates the data of that object - will be passed directly to the objects constructor.
+end -> indicates the end of the creation of that object
