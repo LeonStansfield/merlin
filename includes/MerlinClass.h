@@ -412,12 +412,6 @@ public:
                     mode = 2;
                     continue;
                 }
-                else if (line == "Player"){
-                    objectType = "Player";
-                    typeDataCount = 7;
-                    mode = 2;
-                    continue;
-                }
             }
             if (mode == 2){
                 if (line == "end"){
@@ -461,7 +455,13 @@ public:
         for (std::vector<string>::size_type i = 0; i < objectData.size(); i++){
             cout << "Data " << i << ": " << objectData[i] << endl;
         }
-        return;
+
+        if(objectType == "Tilemap"){
+            Tilemap *tilemap = new Tilemap(objectData[0], stoi(objectData[1]));
+            gameObjects.push_back(tilemap);
+            printf("Tilemap created\n");
+            tilemap->ready(gameObjects);
+        }
     }
 
 };
