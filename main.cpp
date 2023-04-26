@@ -88,6 +88,9 @@ int main()
 	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); // init render texture
 	SetTargetFPS(30);															   // Set our game to run at 30 frames-per-second
 
+	Image icon = LoadImage("gameData/Textures/Icon/Icon_lrg.png");						   // load icon
+	SetWindowIcon(icon); 
+
 	std::vector<GameObject *> gameObjects; // list of game objects to be processed
 	
 	ready(gameObjects);

@@ -396,7 +396,6 @@ public:
         {
             if (mode == 0){
                 if (line == "object"){
-                    printf("object found\n");
                     mode = 1;
                     continue;
                 }
@@ -408,14 +407,12 @@ public:
                     continue;
                 }
                 else if (line == "Tilemap"){
-                    printf("tilemap found\n");
                     objectType = "Tilemap";
                     typeDataCount = 2;
                     mode = 2;
                     continue;
                 }
                 else if (line == "Player"){
-                    printf("player found\n");
                     objectType = "Player";
                     typeDataCount = 7;
                     mode = 2;
@@ -429,7 +426,6 @@ public:
                     continue;
                 }
                 else{
-                    printf("object name found\n");
                     objectName = line;
                     mode = 3;
                     continue;
@@ -442,11 +438,9 @@ public:
                     continue;
                 }
                 else if (objectDataCount < typeDataCount){
-                    printf("object data found\n");
                     objectData.push_back(line);
                     objectDataCount++;
                     if (objectDataCount == typeDataCount){
-                        printf("object data complete, creating object\n");
                         createObject(gameObjects, objectType, objectName, objectData);
                         objectData.clear();
                         objectDataCount = 0;
@@ -463,7 +457,6 @@ public:
 	}
 
     void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string> & objectData){
-        cout << "OBJECT CREATED\n" << endl;
         cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
         for (std::vector<string>::size_type i = 0; i < objectData.size(); i++){
             cout << "Data " << i << ": " << objectData[i] << endl;
