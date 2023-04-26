@@ -6,12 +6,11 @@ player
 1
 true
 white
-"gameData/Textures/player.png", {0, 0}
-end
+"gameData/Textures/player.png"
+{0, 0}
 
 object
 Tilemap
 tilemap
 "gameData/tilemap.txt"
 8
-end
