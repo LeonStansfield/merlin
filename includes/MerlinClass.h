@@ -367,7 +367,7 @@ public:
         this->filename = filename;
     }
 
-	void load(std::vector<GameObject*>& gameObjects)
+	void loadScene(std::vector<GameObject*>& gameObjects)
     {
         //load file
         fstream file;
@@ -450,6 +450,13 @@ public:
         file.close();
 	}
 
+    void changeScene(){
+        //destroy all objects in the scene
+
+        //load new scene
+
+    }
+
     void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string> & objectData){
             cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
             for (std::vector<string>::size_type i = 0; i < objectData.size(); i++){
@@ -464,7 +471,6 @@ public:
                 Tilemap *tilemap = new Tilemap(objectData[0], stoi(objectData[1]));
                 gameObjects.push_back(tilemap);
                 printf("Tilemap created\n");
-                //tilemap->ready(gameObjects);
             }
         }
 

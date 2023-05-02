@@ -32,7 +32,7 @@ void ready(std::vector<GameObject*>& gameObjects){
 	/* */
 
 	Scene *scene = new Scene("gameData/scenes/test-scene.msd");
-	scene->load(gameObjects);
+	scene->loadScene(gameObjects);
 
 	// proccess game objects ready function
 	for (GameObject *gameObject : gameObjects)
