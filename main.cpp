@@ -18,6 +18,8 @@ Vector2 cameraOffset = {0, 0};
 int playerReference = 0;
 Vector2 playerPosition = {0, 0};
 
+SceneManager sceneManager;
+
 
 void ready(std::vector<GameObject*>& gameObjects){
 	// declaring all objects in the scene and adding them to the array of game objectsd
@@ -27,12 +29,8 @@ void ready(std::vector<GameObject*>& gameObjects){
 	gameObjects.push_back(player);
 	playerReference = gameObjects.size() - 1;
 
-	//Tilemap *tilemap = new Tilemap("gameData/tilemap.txt", 8);
-	//gameObjects.push_back(tilemap);
-	/* */
-
-	Scene *scene = new Scene("gameData/scenes/test-scene.msd");
-	scene->loadScene(gameObjects);
+	sceneManager = SceneManager();
+	sceneManager.loadScene(gameObjects, "gameData/scenes/sceneOne.msd");
 
 	// proccess game objects ready function
 	for (GameObject *gameObject : gameObjects)
@@ -46,6 +44,25 @@ void update(std::vector<GameObject*>& gameObjects){
 	for (GameObject *gameObject : gameObjects)
 	{
 		gameObject->update(gameObjects);
+	}
+
+
+	//gameObjects[sceneManagerReference].
+
+	int scene = 1;
+	string sceneOne = "gameData/scenes/sceneOne.msd";
+	string sceneTwo = "gameData/scenes/sceneTwo.msd";
+	if (IsKeyPressed(KEY_E)) {
+		if (scene == 1) {
+			//change scene to sceneTwo
+			sceneManager.changeScene(gameObjects, playerReference, sceneTwo);
+			scene = 2;
+		}
+		else if (scene == 2) {
+			//change scene to sceneOne
+			sceneManager.changeScene(gameObjects, playerReference, sceneOne);
+			scene = 1;
+		}
 	}
 
 	// Determine the current room

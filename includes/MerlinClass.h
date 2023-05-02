@@ -358,16 +358,9 @@ public:
 	}
 };
 
-class Scene{
-private:
-    string filename;
-
+class SceneManager{
 public:
-    Scene(string filename){
-        this->filename = filename;
-    }
-
-	void loadScene(std::vector<GameObject*>& gameObjects)
+	void loadScene(std::vector<GameObject*>& gameObjects, string filename)
     {
         //load file
         fstream file;
@@ -450,10 +443,20 @@ public:
         file.close();
 	}
 
-    void changeScene(){
+    void changeScene(std::vector<GameObject*>& gameObjects, int playerIndex, string filename){
         //destroy all objects in the scene
+        for (std::vector<GameObject*>::size_type i = 0; i < gameObjects.size(); i++){
+            if (i != playerIndex){
+                delete gameObjects[i];
+            }
+        }
+
+        //set player position
+        gameObjects[playerIndex]->position = { 64, 64 };
+
 
         //load new scene
+        loadScene(gameObjects, filename);
 
     }
 

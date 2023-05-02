@@ -39,6 +39,24 @@ public:
 		this->layer = layer;
 	}
 
+	void changeScene(vector<GameObject *> gameObjects)
+	{
+		int scene = 1;
+		string sceneOne = "sceneOne.txt";
+		string sceneTwo = "sceneTwo.txt";
+		if (IsKeyPressed(KEY_E)) {
+			if (scene == 1) {
+				//change scene to sceneTwo
+				
+				scene = 2;
+			}
+			else if (scene == 2) {
+				//change scene to sceneOne
+				scene = 1;
+			}
+		}
+	}
+
 	void update(vector<GameObject *> gameObjects) override
 	{
 		//check if the player is grounded
@@ -129,6 +147,8 @@ public:
 		}
 
 		move();
+
+		changeScene(gameObjects);
 
 		// check for collisions
 		processCollisions(gameObjects);
