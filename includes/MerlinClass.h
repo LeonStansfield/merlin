@@ -451,17 +451,21 @@ public:
 	}
 
     void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string> & objectData){
-        cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
-        for (std::vector<string>::size_type i = 0; i < objectData.size(); i++){
-            cout << "Data " << i << ": " << objectData[i] << endl;
-        }
+            cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
+            for (std::vector<string>::size_type i = 0; i < objectData.size(); i++){
+                cout << "Data " << i << ": " << objectData[i] << endl;
+            }
 
-        if(objectType == "Tilemap"){
-            Tilemap *tilemap = new Tilemap(objectData[0], stoi(objectData[1]));
-            gameObjects.push_back(tilemap);
-            printf("Tilemap created\n");
-            tilemap->ready(gameObjects);
+            if(objectType == "Tilemap"){
+                if (objectData.size() < 2) {
+                    cout << "Error: Tilemap data vector should have at least two elements" << endl;
+                    return;
+                }
+                Tilemap *tilemap = new Tilemap(objectData[0], stoi(objectData[1]));
+                gameObjects.push_back(tilemap);
+                printf("Tilemap created\n");
+                //tilemap->ready(gameObjects);
+            }
         }
-    }
 
 };
