@@ -39,6 +39,7 @@ void ready(std::vector<GameObject*>& gameObjects){
 	}
 }
 
+
 void update(std::vector<GameObject*>& gameObjects){
 	// process all game objects
 	for (GameObject *gameObject : gameObjects)
@@ -46,8 +47,6 @@ void update(std::vector<GameObject*>& gameObjects){
 		gameObject->update(gameObjects);
 	}
 
-
-	//gameObjects[sceneManagerReference].
 
 	int scene = 1;
 	string sceneOne = "gameData/scenes/sceneOne.msd";

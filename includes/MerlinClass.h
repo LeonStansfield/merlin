@@ -445,15 +445,20 @@ public:
 
     void changeScene(std::vector<GameObject*>& gameObjects, int playerIndex, string filename){
         //destroy all objects in the scene
+        //std::vector<GameObject*> players;
+        
+        //move player to players vector
+        //players.push_back(gameObjects[playerIndex]);
+
+        //remove all objects from gameObjects vector
         for (std::vector<GameObject*>::size_type i = 0; i < gameObjects.size(); i++){
-            if (i != playerIndex){
-                delete gameObjects[i];
-            }
+            delete gameObjects[i];
         }
+        // remove the deleted pointers from the vector
+        gameObjects.clear();
 
-        //set player position
-        gameObjects[playerIndex]->position = { 64, 64 };
-
+        //add player back to gameObjects vector
+        //gameObjects.push_back(players[0]);
 
         //load new scene
         loadScene(gameObjects, filename);
