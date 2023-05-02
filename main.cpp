@@ -56,6 +56,7 @@ void update(std::vector<GameObject*>& gameObjects){
 			//change scene to sceneTwo
 			sceneManager.changeScene(gameObjects, playerReference, sceneTwo);
 			scene = 2;
+			playerReference = 0;
 		}
 		else if (scene == 2) {
 			//change scene to sceneOne
@@ -65,7 +66,12 @@ void update(std::vector<GameObject*>& gameObjects){
 	}
 
 	// Determine the current room
-	playerPosition = gameObjects[playerReference]->getPosition(); // player must always be the first object in the game objects array
+	if (playerReference != -1){
+		playerPosition = gameObjects[playerReference]->getPosition();
+	}
+	else {
+		playerPosition = {0, 0};
+	}
 	int currentRoomX = playerPosition.x / gameScreenWidth; 
 	int currentRoomY = playerPosition.y / gameScreenHeight;
 	// Set the camera offset
