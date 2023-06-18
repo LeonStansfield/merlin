@@ -107,22 +107,6 @@ public:
 		{
 			velocity.x += 0.3;
 		}
-		else
-		{
-			if (velocity.x > 0.1)
-			{
-				velocity.x -= 0.3;
-			}
-			else if (velocity.x < -0.1)
-			{
-				velocity.x += 0.3;
-			}
-			else
-			{
-				velocity.x = 0;
-			}
-		}
-
 		if (velocity.x > 2)
 		{
 			velocity.x = 2;
