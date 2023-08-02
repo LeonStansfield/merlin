@@ -13,8 +13,6 @@ C:\Users\leons\Documents\projects\merlin\Player.h(93,1): warning C4305: '+=': tr
 C:\Users\leons\Documents\projects\merlin\Player.h(99,1): warning C4305: '-=': truncation from 'double' to 'float'
 C:\Users\leons\Documents\projects\merlin\Player.h(103,1): warning C4305: '+=': truncation from 'double' to 'float'
 C:\Users\leons\Documents\projects\merlin\Main.cpp(31,42): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\leons\Documents\projects\merlin\Main.cpp(78,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\leons\Documents\projects\merlin\Main.cpp(79,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\leons\Documents\projects\merlin\Main.cpp(80,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  LINK : C:\Users\leons\Documents\projects\merlin\x64\Debug\merlin.exe not found or not built by the last incremental link; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   merlin.vcxproj -> C:\Users\leons\Documents\projects\merlin\x64\Debug\merlin.exe

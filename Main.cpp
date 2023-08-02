@@ -16,7 +16,7 @@ const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 Vector2 cameraOffset = { 0, 0 };
 Vector2 playerPosition = { 0, 0 };
-int playerReference = 0;
+int playerReference;
 int scene = 1;
 
 SceneManager sceneManager;
@@ -55,14 +55,13 @@ void update(std::vector<GameObject*>& gameObjects)
 		if (scene == 1)
 		{
 			// change scene to sceneTwo
-			sceneManager.changeScene(gameObjects, playerReference, sceneTwo);
+			sceneManager.changeScene(gameObjects, sceneTwo);
 			scene = 2;
-			playerReference = 0;
 		}
 		else if (scene == 2)
 		{
 			// change scene to sceneOne
-			sceneManager.changeScene(gameObjects, playerReference, sceneOne);
+			sceneManager.changeScene(gameObjects, sceneOne);
 			scene = 1;
 		}
 	}

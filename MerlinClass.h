@@ -517,7 +517,7 @@ public:
         file.close();
     }
 
-    void changeScene(std::vector<GameObject*>& gameObjects, int playerIndex, string filename)
+    void changeScene(std::vector<GameObject*>& gameObjects, string filename)
     {
         // remove all objects from gameObjects vector
         for (std::vector<GameObject*>::size_type i = 0; i < gameObjects.size(); i++)
