@@ -39,28 +39,10 @@ public:
 		this->layer = layer;
 	}
 
-	void changeScene(vector<GameObject *> gameObjects)
-	{
-		int scene = 1;
-		string sceneOne = "sceneOne.txt";
-		string sceneTwo = "sceneTwo.txt";
-		if (IsKeyPressed(KEY_E)) {
-			if (scene == 1) {
-				//change scene to sceneTwo
-				
-				scene = 2;
-			}
-			else if (scene == 2) {
-				//change scene to sceneOne
-				scene = 1;
-			}
-		}
-	}
-
 	void update(vector<GameObject *> gameObjects) override
 	{
-		//check if the player is grounded
-		if (pget({ position.x + size.x / 2, position.y + size.y + 1 }, 1, gameObjects))
+		// check if the player is grounded
+		if (pget({position.x + size.x / 2, position.y + size.y + 1}, 1, gameObjects))
 		{
 			isGrounded = true;
 		}
@@ -69,27 +51,30 @@ public:
 			isGrounded = false;
 		}
 
-		//check if player is on a roof
-		if (pget({ position.x + size.x / 2, position.y - 1 }, 1, gameObjects))
+		// check if player is on a roof
+		if (pget({position.x + size.x / 2, position.y - 1}, 1, gameObjects))
 		{
 			velocity.y = 0;
 		}
 
-		//check if player is on a wall
-		if (pget({ position.x + size.x + 1, position.y + size.y / 2 }, 1, gameObjects))
+		// check if player is on a wall
+		if (pget({position.x + size.x + 1, position.y + size.y / 2}, 1, gameObjects))
 		{
 			velocity.x = 0;
 		}
-		else if (pget({ position.x - 1, position.y + size.y / 2 }, 1, gameObjects))
+		else if (pget({position.x - 1, position.y + size.y / 2}, 1, gameObjects))
 		{
 			velocity.x = 0;
 		}
 
-		if (!isGrounded) {
-			if (velocity.y <= -0.1) {
+		if (!isGrounded)
+		{
+			if (velocity.y <= -0.1)
+			{
 				velocity.y += gravity;
 			}
-			else if (velocity.y > -0.1) {
+			else if (velocity.y > -0.1)
+			{
 				velocity.y += gravity * fallMultiplier;
 			}
 		}
@@ -107,6 +92,22 @@ public:
 		{
 			velocity.x += 0.3;
 		}
+		else
+		{
+			if (velocity.x > 0.1)
+			{
+				velocity.x -= 0.3;
+			}
+			else if (velocity.x < -0.1)
+			{
+				velocity.x += 0.3;
+			}
+			else
+			{
+				velocity.x = 0;
+			}
+		}
+
 		if (velocity.x > 2)
 		{
 			velocity.x = 2;
@@ -131,9 +132,7 @@ public:
 		}
 
 		move();
-
-		changeScene(gameObjects);
-
+		
 		// check for collisions
 		processCollisions(gameObjects);
 	}

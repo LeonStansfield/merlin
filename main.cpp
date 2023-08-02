@@ -15,13 +15,14 @@ const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
 Vector2 cameraOffset = {0, 0};
-int playerReference = 0;
 Vector2 playerPosition = {0, 0};
+int playerReference = 0;
+int scene = 1;
 
 SceneManager sceneManager;
 
-
-void ready(std::vector<GameObject*>& gameObjects){
+void ready(std::vector<GameObject *> &gameObjects)
+{
 	// declaring all objects in the scene and adding them to the array of game objectsd
 
 	/* */
@@ -39,47 +40,50 @@ void ready(std::vector<GameObject*>& gameObjects){
 	}
 }
 
-
-void update(std::vector<GameObject*>& gameObjects){
+void update(std::vector<GameObject *> &gameObjects)
+{
 	// process all game objects
 	for (GameObject *gameObject : gameObjects)
 	{
 		gameObject->update(gameObjects);
 	}
 
-
-	int scene = 1;
 	string sceneOne = "gameData/scenes/sceneOne.msd";
 	string sceneTwo = "gameData/scenes/sceneTwo.msd";
-	if (IsKeyPressed(KEY_E)) {
-		if (scene == 1) {
-			//change scene to sceneTwo
+	if (IsKeyPressed(KEY_E))
+	{
+		if (scene == 1)
+		{
+			// change scene to sceneTwo
 			sceneManager.changeScene(gameObjects, playerReference, sceneTwo);
 			scene = 2;
 			playerReference = 0;
 		}
-		else if (scene == 2) {
-			//change scene to sceneOne
+		else if (scene == 2)
+		{
+			// change scene to sceneOne
 			sceneManager.changeScene(gameObjects, playerReference, sceneOne);
 			scene = 1;
 		}
 	}
 
 	// Determine the current room
-	if (playerReference != -1){
+	if (playerReference != -1)
+	{
 		playerPosition = gameObjects[playerReference]->getPosition();
 	}
-	else {
+	else
+	{
 		playerPosition = {0, 0};
 	}
-	int currentRoomX = playerPosition.x / gameScreenWidth; 
+	int currentRoomX = playerPosition.x / gameScreenWidth;
 	int currentRoomY = playerPosition.y / gameScreenHeight;
 	// Set the camera offset
 	cameraOffset = {float(currentRoomX * 128), float(currentRoomY * 128)};
-
 }
 
-void draw(std::vector<GameObject*>& gameObjects){
+void draw(std::vector<GameObject *> &gameObjects)
+{
 	// draw all objects that are, or inherit from visual instance class
 	for (GameObject *gameObject : gameObjects)
 	{
@@ -89,11 +93,11 @@ void draw(std::vector<GameObject*>& gameObjects){
 		{
 			visualInstance->draw(cameraOffset);
 		}
-
 	}
 }
 
-void end(std::vector<GameObject*>& gameObjects){
+void end(std::vector<GameObject *> &gameObjects)
+{
 	// draw all objects that are, or inherit from visual instance class
 	for (GameObject *gameObject : gameObjects)
 	{
@@ -109,11 +113,11 @@ int main()
 	RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight); // init render texture
 	SetTargetFPS(30);															   // Set our game to run at 30 frames-per-second
 
-	Image icon = LoadImage("gameData/Textures/Icon/Icon_lrg.png");						   // load icon
-	SetWindowIcon(icon); 
+	Image icon = LoadImage("gameData/Textures/Icon/Icon_lrg.png"); // load icon
+	SetWindowIcon(icon);
 
 	std::vector<GameObject *> gameObjects; // list of game objects to be processed
-	
+
 	ready(gameObjects);
 
 	while (!WindowShouldClose())
@@ -124,21 +128,21 @@ int main()
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
-			ClearBackground(white); // clear render texture
-			draw(gameObjects); // draw game objects
-		EndTextureMode(); // end drawing to render texture
+		ClearBackground(white);	  // clear render texture
+		draw(gameObjects);		  // draw game objects
+		EndTextureMode();		  // end drawing to render texture
 
 		// draw render texture to screen
-		BeginDrawing();	// begin drawing to screen
-			ClearBackground(black); // clear screen
-				DrawTexturePro(target.texture,
-						Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
-						Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
-						Vector2{0, 0},
-						0.0f,
-						WHITE); // draw render texture to screen
-			DrawFPS(10, 10); // draw fps counter
-		EndDrawing(); // end drawing to screen
+		BeginDrawing();			// begin drawing to screen
+		ClearBackground(black); // clear screen
+		DrawTexturePro(target.texture,
+					   Rectangle{0, 0, float(target.texture.width), float(-target.texture.height)},
+					   Rectangle{0, 0, float(GetScreenWidth()), float(GetScreenHeight())},
+					   Vector2{0, 0},
+					   0.0f,
+					   WHITE); // draw render texture to screen
+		DrawFPS(10, 10);	   // draw fps counter
+		EndDrawing();		   // end drawing to screen
 	}
 
 	// deinitialisation
