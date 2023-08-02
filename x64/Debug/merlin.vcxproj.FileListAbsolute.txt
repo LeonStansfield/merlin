@@ -1,2 +1,0 @@
-C:\Users\leons\Desktop\merlin\x64\Debug\merlin.exe
-C:\Users\leons\Documents\projects\merlin\x64\Debug\merlin.exe
