@@ -1,0 +1,19 @@
+﻿  Main.cpp
+C:\Users\leons\Desktop\merlin\MerlinClass.h(124,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(125,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(132,69): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(132,61): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(179,64): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(179,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(179,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\MerlinClass.h(179,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\Player.h(15): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\leons\Desktop\merlin\Player.h(89,1): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\leons\Desktop\merlin\Player.h(93,1): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\leons\Desktop\merlin\Player.h(99,1): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\leons\Desktop\merlin\Player.h(103,1): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\leons\Desktop\merlin\Main.cpp(31,42): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\Main.cpp(79,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\leons\Desktop\merlin\Main.cpp(80,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  merlin.vcxproj -> C:\Users\leons\Desktop\merlin\x64\Debug\merlin.exe
