@@ -5,6 +5,72 @@
 #include <string>
 
 #include "raylib.h"
+
+
+class GameObject
+{
+public:
+    virtual ~GameObject() {} // virtual destructor
+    Vector2 position;
+    int layer;
+
+    GameObject();
+
+    GameObject(Vector2 position);
+
+    Vector2 getPosition();
+
+    void setPosition(Vector2 position);
+
+    virtual void ready(std::vector<GameObject*>& gameObjects);
+
+    virtual void update(vector<GameObject*> gameObjects);
+
+    virtual void end();
+};
+
+class VisualInstance : public GameObject
+{
+public:
+    bool visible = true;
+    Vector2 size;
+    bool hasTexture;
+    Color color;
+    string texturePath;
+    Texture2D texture;
+
+    VisualInstance();
+
+    VisualInstance(Vector2 position, Vector2 size, bool hasTexture, Color color, string texturePath);
+
+    Vector2 getSize();
+
+    void setSize(Vector2 size);
+
+    Color getColor();
+
+    void setColor(Color color);
+
+    void setVisible(bool visibility);
+
+    bool getVisible();
+
+    // overide ready() to load textures
+    void ready(std::vector<GameObject*>& gameObjects) override;
+
+    void draw(Vector2 camera_offset);
+
+    void end() override;
+};
+
+/*
+#pragma once
+
+#include <vector>
+#include <fstream>
+#include <string>
+
+#include "raylib.h"
 #include "MerlinResources.h"
 #include "MerlinMath.h"
 
@@ -562,3 +628,4 @@ public:
         }
     }
 };
+*/

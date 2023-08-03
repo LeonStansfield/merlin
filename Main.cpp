@@ -4,10 +4,52 @@
 using namespace std;
 
 #include "raylib.h"
+#include "MerlinClass.h"
+
+int main() {
+	// Initialization
+	const int screenWidth = 800;
+	const int screenHeight = 800;
+	const int fov = PI / 2.;
+
+	InitWindow(screenWidth, screenHeight, "Basic Raytracer");
+
+	// Init
+	VisualInstance object = VisualInstance({ 8, 8 }, { 50, 50 }, false, BLUE, "");
+
+	while (!WindowShouldClose()) // Detect window close button or ESC key
+	{
+		// Update
+
+		// Draw
+		BeginDrawing();
+
+		object.draw({0, 0});
+
+		ClearBackground(WHITE);
+		EndDrawing();
+	}
+
+	// De-Initialization
+	CloseWindow(); // Close window and OpenGL context
+
+	return 0;
+}
+
+// -- Original engine loop code below --
+/*
+#include <math.h>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+#include "raylib.h"
 #include "MerlinResources.h"
 #include "MerlinMath.h"
 #include "MerlinClass.h"
 #include "Player.h"
+
+
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -148,3 +190,4 @@ int main()
 	CloseWindow(); // close window and openGL context
 	return 0;
 }
+*/
