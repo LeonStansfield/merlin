@@ -6,8 +6,6 @@
 using namespace std;
 
 #include "raylib.h"
-#include "MerlinResources.h"
-#include "MerlinResources.h"
 #include "MerlinClass.h"
 
 // Game Object
@@ -367,12 +365,12 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			infile >> tileType;
 			if (tileType == 1)
 			{
-				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 1, false, green, "");
+				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 1, false, GREEN, "");
 				gameObjects.push_back(tile);
 			}
 			else if (tileType == 2)
 			{
-				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, orange, "");
+				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, ORANGE, "");
 				gameObjects.push_back(tile);
 			}
 		}
@@ -385,7 +383,6 @@ void Tilemap::ready(std::vector<GameObject*>& gameObjects)
 }
 
 // Scene manager
-/*
 void SceneManager::loadScene(std::vector<GameObject*>& gameObjects, string filename)
 {
 	// load file
@@ -506,7 +503,7 @@ void SceneManager::changeScene(std::vector<GameObject*>& gameObjects, string fil
 	}
 }
 
-void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string>& objectData)
+void SceneManager::createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string>& objectData)
 {
 	cout << "Creating object of type: " << objectType << " with name: " << objectName << endl;
 	for (std::vector<string>::size_type i = 0; i < objectData.size(); i++)
@@ -526,4 +523,3 @@ void createObject(std::vector<GameObject*>& gameObjects, string objectType, stri
 		printf("Tilemap created\n");
 	}
 }
-*/

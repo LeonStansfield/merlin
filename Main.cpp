@@ -7,50 +7,7 @@ using namespace std;
 
 #include "raylib.h"
 #include "MerlinClass.h"
-
-int main() {
-	// Initialization
-	const int screenWidth = 800;
-	const int screenHeight = 800;
-	const int fov = PI / 2.;
-
-	InitWindow(screenWidth, screenHeight, "Basic Raytracer");
-
-	// Init
-	VisualInstance object = VisualInstance({ 8, 8 }, { 50, 50 }, false, BLUE, "");
-
-	while (!WindowShouldClose()) // Detect window close button or ESC key
-	{
-		// Update
-
-		// Draw
-		BeginDrawing();
-
-		object.draw({0, 0});
-
-		ClearBackground(WHITE);
-		EndDrawing();
-	}
-
-	// De-Initialization
-	CloseWindow(); // Close window and OpenGL context
-
-	return 0;
-}
-
-// -- Original engine loop code below --
-/*
-#include <math.h>
-#include <vector>
-#include <iostream>
-using namespace std;
-
-#include "raylib.h"
-#include "MerlinMath.h"
-#include "MerlinClass.h"
-#include "Player.h"
-
-
+#include "player.h"
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -68,7 +25,8 @@ void ready(std::vector<GameObject*>& gameObjects)
 {
 	// declaring all objects in the scene and adding them to the array of game objectsd
 
-	Player* player = new Player({ 64, 64 }, { 6, 8 }, 1, true, white, "gameData/Textures/player.png", { 0, 0 });
+	//
+	Player* player = new Player({ 64, 64 }, { 6, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
 	gameObjects.push_back(player);
 	playerReference = gameObjects.size() - 1;
 
@@ -169,13 +127,13 @@ int main()
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
-		ClearBackground(white);	  // clear render texture
+		ClearBackground(WHITE);	  // clear render texture
 		draw(gameObjects);		  // draw game objects
 		EndTextureMode();		  // end drawing to render texture
 
 		// draw render texture to screen
 		BeginDrawing();			// begin drawing to screen
-		ClearBackground(black); // clear screen
+		ClearBackground(BLACK); // clear screen
 		DrawTexturePro(target.texture,
 			Rectangle{ 0, 0, float(target.texture.width), float(-target.texture.height) },
 			Rectangle{ 0, 0, float(GetScreenWidth()), float(GetScreenHeight()) },
@@ -191,4 +149,3 @@ int main()
 	CloseWindow(); // close window and openGL context
 	return 0;
 }
-*/

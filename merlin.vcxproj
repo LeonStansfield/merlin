@@ -129,10 +129,10 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MerlinClass.cpp" />
+    <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MerlinClass.h" />
-    <ClInclude Include="MerlinResources.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
