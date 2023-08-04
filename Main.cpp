@@ -33,6 +33,7 @@ SceneManager sceneManager;
 void ready(std::vector<GameObject*>& gameObjects)
 {
 	// declaring all objects in the scene and adding them to the array of game objects
+
 	sceneManager = SceneManager();
 	sceneManager.loadScene(gameObjects, "gameData/scenes/sceneOne.msd");
 

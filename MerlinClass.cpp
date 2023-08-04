@@ -362,19 +362,33 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 		{
 			int tileType;
 			infile >> tileType;
-			if (tileType == 1)
+
+			switch (tileType)
+			{
+			case 0:
+				// Empty tile, do nothing
+				break;
+			case 1:
 			{
 				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 1, false, GREEN, "");
 				gameObjects.push_back(tile);
+				break;
 			}
-			else if (tileType == 2)
+			case 2:
 			{
 				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, ORANGE, "");
 				gameObjects.push_back(tile);
+				break;
+			}
+			default:
+			{
+				break;
+			}
 			}
 		}
 	}
 }
+
 
 void Tilemap::ready(std::vector<GameObject*>& gameObjects)
 {
@@ -420,7 +434,7 @@ void SceneManager::loadScene(std::vector<GameObject*>& gameObjects, string filen
 		}
 		if (mode == 1)
 		{
-			if (line == "End")
+			if (line == "end")
 			{
 				printf("End found, halting object ingress\n");
 				mode = 0;
@@ -430,6 +444,12 @@ void SceneManager::loadScene(std::vector<GameObject*>& gameObjects, string filen
 			{
 				objectType = "Tilemap";
 				typeDataCount = 2;
+				mode = 2;
+				continue;
+			}
+			else if (line == "Player") {
+				objectType = "Player";
+				typeDataCount = 10;
 				mode = 2;
 				continue;
 			}
@@ -488,10 +508,6 @@ void SceneManager::changeScene(std::vector<GameObject*>& gameObjects, string fil
 	// remove the deleted pointers from the vector
 	gameObjects.clear();
 
-	// Create a new player object - this should be done via the tilemap in the .msd file
-	Player* player = new Player({ 16, 16 }, { 6, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
-	gameObjects.push_back(player);
-
 	// load new scene
 	loadScene(gameObjects, filename);
 
@@ -520,5 +536,32 @@ void SceneManager::createObject(std::vector<GameObject*>& gameObjects, string ob
 		Tilemap* tilemap = new Tilemap(objectData[0], stoi(objectData[1]));
 		gameObjects.push_back(tilemap);
 		printf("Tilemap created\n");
+	}
+
+	if (objectType == "Player") {
+		if (objectData.size() < 10) {
+			cout << "Error: Tilemap data vector should have at least nine elements" << endl;
+			return;
+		}
+		// Parse data from objectData vector
+		int position_x = stoi(objectData[0]);
+		int position_y = stoi(objectData[1]);
+		Vector2 position = { position_x, position_y };
+		int size_x = stoi(objectData[2]);
+		int size_y = stoi(objectData[3]);
+		Vector2 size = { size_x, size_y};
+		int layer = stoi(objectData[4]);
+		bool hasTexture = (objectData[5] == "true");
+		Color color = WHITE;
+		string texturePath = objectData[7];
+		int velocity_x = stoi(objectData[8]);
+		int velocity_y = stoi(objectData[9]);
+		Vector2 velocity = { velocity_x, velocity_y };
+
+		// Create the player object using the extracted data
+		Player* player = new Player(position, size, layer, hasTexture, color, texturePath, velocity);
+		gameObjects.push_back(player);
+
+		printf("Player created\n");
 	}
 }
