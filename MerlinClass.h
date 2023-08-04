@@ -8,7 +8,6 @@
 
 #include "raylib.h"
 
-
 class GameObject
 {
 public:
@@ -119,6 +118,9 @@ public:
     // Constructor with arguments
     Tile(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath);
 };
+
+// Foreward declarations for classes that can be spawned by the tilemap that are not declared in MerlinClass.h
+class player;
 
 class Tilemap : public GameObject
 {

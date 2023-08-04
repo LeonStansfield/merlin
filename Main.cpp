@@ -33,10 +33,6 @@ SceneManager sceneManager;
 void ready(std::vector<GameObject*>& gameObjects)
 {
 	// declaring all objects in the scene and adding them to the array of game objects
-
-	Player* player = new Player({ 16, 16 }, { 8, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
-	gameObjects.push_back(player);
-
 	sceneManager = SceneManager();
 	sceneManager.loadScene(gameObjects, "gameData/scenes/sceneOne.msd");
 

@@ -7,8 +7,7 @@ using namespace std;
 
 #include "raylib.h"
 #include "MerlinClass.h"
-
-class Player;
+#include "player.h"
 
 // Game Object
 GameObject::GameObject()
@@ -337,9 +336,7 @@ Tile::Tile(Vector2 position, Vector2 size, int layer, bool hasTexture, Color col
 	this->texturePath = texturePath;
 }
 
-
 // Tilemap
-
 Tilemap::Tilemap(string tileMapPath, int tileSize)
 {
 	this->tileMapPath = tileMapPath;
@@ -374,12 +371,6 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			{
 				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, ORANGE, "");
 				gameObjects.push_back(tile);
-			}
-			else if (tileType == 2) 
-			{
-				//Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { 8, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
-				//gameObjects.push_back(player);
-				//playerReference = gameObjects.size() - 1;
 			}
 		}
 	}
@@ -497,9 +488,9 @@ void SceneManager::changeScene(std::vector<GameObject*>& gameObjects, string fil
 	// remove the deleted pointers from the vector
 	gameObjects.clear();
 
-	// Create a new player object - current circular dependency issues - this should be done in the .msd file anyway
-	//Player *player = new Player({64, 64}, {6, 8}, 1, true, white, "gameData/Textures/player.png", {0, 0});
-	//gameObjects.push_back(player);
+	// Create a new player object - this should be done via the tilemap in the .msd file
+	Player* player = new Player({ 16, 16 }, { 6, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
+	gameObjects.push_back(player);
 
 	// load new scene
 	loadScene(gameObjects, filename);
