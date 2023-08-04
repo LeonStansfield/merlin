@@ -8,6 +8,8 @@ using namespace std;
 #include "raylib.h"
 #include "MerlinClass.h"
 
+class Player;
+
 // Game Object
 GameObject::GameObject()
 {
@@ -372,6 +374,12 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			{
 				Tile* tile = new Tile({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 2, false, ORANGE, "");
 				gameObjects.push_back(tile);
+			}
+			else if (tileType == 2) 
+			{
+				//Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { 8, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
+				//gameObjects.push_back(player);
+				//playerReference = gameObjects.size() - 1;
 			}
 		}
 	}

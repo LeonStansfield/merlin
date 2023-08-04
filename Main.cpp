@@ -6,8 +6,17 @@
 using namespace std;
 
 #include "raylib.h"
+#include "MerlinResources.h"
 #include "MerlinClass.h"
 #include "player.h"
+
+// --- TODO ---
+// - Finish implementing scene loading/changing
+	// - Make it such that the player can be loaded with the tilemap (as well as ultimately, any other objects I have)
+	// - This requires setting up a forward reference for the player so its constructor can be called in the MerlinClass.cpp file
+	// - I also believe it would be helpful to have a 'globals' script with a bunch of globally accessible variables, 
+	// so I can easily set the player reference, scene, camera offset from anywhere
+// - Animated sprites
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -23,12 +32,10 @@ SceneManager sceneManager;
 
 void ready(std::vector<GameObject*>& gameObjects)
 {
-	// declaring all objects in the scene and adding them to the array of game objectsd
+	// declaring all objects in the scene and adding them to the array of game objects
 
-	//
-	Player* player = new Player({ 64, 64 }, { 6, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
+	Player* player = new Player({ 16, 16 }, { 8, 8 }, 1, true, WHITE, "gameData/Textures/player.png", { 0, 0 });
 	gameObjects.push_back(player);
-	playerReference = gameObjects.size() - 1;
 
 	sceneManager = SceneManager();
 	sceneManager.loadScene(gameObjects, "gameData/scenes/sceneOne.msd");
@@ -37,6 +44,16 @@ void ready(std::vector<GameObject*>& gameObjects)
 	for (GameObject* gameObject : gameObjects)
 	{
 		gameObject->ready(gameObjects);
+	}
+
+	int i = 0;
+	for (GameObject* gameObject : gameObjects) 
+	{
+		i += 1;
+		if (dynamic_cast<Player*>(gameObject) != nullptr) {
+			break;
+		}
+
 	}
 }
 
@@ -48,6 +65,7 @@ void update(std::vector<GameObject*>& gameObjects)
 		gameObject->update(gameObjects);
 	}
 
+	// Basic scene change code
 	string sceneOne = "gameData/scenes/sceneOne.msd";
 	string sceneTwo = "gameData/scenes/sceneTwo.msd";
 	if (IsKeyPressed(KEY_E))
@@ -127,21 +145,21 @@ int main()
 
 		// drawing
 		BeginTextureMode(target); // begin drawing to render texture
-		ClearBackground(WHITE);	  // clear render texture
-		draw(gameObjects);		  // draw game objects
-		EndTextureMode();		  // end drawing to render texture
+		ClearBackground(WHITE); // clear render texture
+		draw(gameObjects); // draw game objects
+		EndTextureMode(); // end drawing to render texture
 
 		// draw render texture to screen
-		BeginDrawing();			// begin drawing to screen
+		BeginDrawing();	// begin drawing to screen
 		ClearBackground(BLACK); // clear screen
 		DrawTexturePro(target.texture,
 			Rectangle{ 0, 0, float(target.texture.width), float(-target.texture.height) },
 			Rectangle{ 0, 0, float(GetScreenWidth()), float(GetScreenHeight()) },
 			Vector2{ 0, 0 },
 			0.0f,
-			WHITE); // draw render texture to screen
-		DrawFPS(10, 10);	   // draw fps counter
-		EndDrawing();		   // end drawing to screen
+			WHITE);	// draw render texture to screen
+		DrawFPS(10, 10); // draw fps counter
+		EndDrawing(); // end drawing to screen
 	}
 
 	// deinitialisation
