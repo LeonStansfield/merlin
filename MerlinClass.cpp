@@ -1,3 +1,4 @@
+#include <math.h>
 #include <vector>
 #include <fstream>
 #include <string>
@@ -5,6 +6,7 @@
 using namespace std;
 
 #include "raylib.h"
+#include "MerlinResources.h"
 #include "MerlinResources.h"
 #include "MerlinClass.h"
 
@@ -383,7 +385,7 @@ void Tilemap::ready(std::vector<GameObject*>& gameObjects)
 }
 
 // Scene manager
-
+/*
 void SceneManager::loadScene(std::vector<GameObject*>& gameObjects, string filename)
 {
 	// load file
@@ -524,3 +526,4 @@ void createObject(std::vector<GameObject*>& gameObjects, string objectType, stri
 		printf("Tilemap created\n");
 	}
 }
+*/

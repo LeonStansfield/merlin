@@ -132,7 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MerlinClass.h" />
-    <ClInclude Include="MerlinMath.h" />
     <ClInclude Include="MerlinResources.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>

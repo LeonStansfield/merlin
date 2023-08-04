@@ -26,9 +26,6 @@
     <ClInclude Include="MerlinClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MerlinMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>

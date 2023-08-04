@@ -5,7 +5,6 @@
 
 #include "raylib.h"
 #include "MerlinResources.h"
-#include "MerlinMath.h"
 #include "MerlinClass.h"
 
 class Player : public KinematicBody

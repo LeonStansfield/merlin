@@ -1,5 +1,7 @@
 #include <math.h>
 #include <vector>
+#include <fstream>
+#include <string>
 #include <iostream>
 using namespace std;
 
@@ -44,7 +46,6 @@ int main() {
 using namespace std;
 
 #include "raylib.h"
-#include "MerlinResources.h"
 #include "MerlinMath.h"
 #include "MerlinClass.h"
 #include "Player.h"
