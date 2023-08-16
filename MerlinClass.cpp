@@ -385,6 +385,7 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			{
 				Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 1, "assets/player.png");
 				gameObjects.push_back(player);
+				GlobalVariables::GetInstance().playerReference = gameObjects.size() - 1;
 				break;
 			}
 			default:

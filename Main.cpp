@@ -21,10 +21,6 @@ const int screenWidth = 896;
 const int screenHeight = 896;
 const int gameScreenWidth = 128;
 const int gameScreenHeight = 128;
-Vector2 cameraOffset = { 0, 0 };
-Vector2 playerPosition = { 0, 0 };
-int playerReference;
-int scene = 1;
 
 void ready(std::vector<GameObject*>& gameObjects)
 {
@@ -59,18 +55,18 @@ void update(std::vector<GameObject*>& gameObjects)
 	}
 
 	// Determine the current room
-	if (playerReference != -1)
+	if (GlobalVariables::GetInstance().playerReference != -1)
 	{
-		playerPosition = gameObjects[playerReference]->getPosition();
+		GlobalVariables::GetInstance().playerPosition = gameObjects[GlobalVariables::GetInstance().playerReference]->getPosition();
 	}
 	else
 	{
-		playerPosition = { 0, 0 };
+		GlobalVariables::GetInstance().playerPosition = { 0, 0 };
 	}
-	int currentRoomX = playerPosition.x / gameScreenWidth;
-	int currentRoomY = playerPosition.y / gameScreenHeight;
+	int currentRoomX = GlobalVariables::GetInstance().playerPosition.x / gameScreenWidth;
+	int currentRoomY = GlobalVariables::GetInstance().playerPosition.y / gameScreenHeight;
 	// Set the camera offset
-	cameraOffset = { float(currentRoomX * 128), float(currentRoomY * 128) };
+	GlobalVariables::GetInstance().cameraOffset = { float(currentRoomX * 128), float(currentRoomY * 128) };
 }
 
 void draw(std::vector<GameObject*>& gameObjects)
@@ -82,7 +78,7 @@ void draw(std::vector<GameObject*>& gameObjects)
 		VisualInstance* visualInstance = dynamic_cast<VisualInstance*>(gameObject);
 		if (visualInstance != nullptr && visualInstance->getVisible())
 		{
-			visualInstance->draw(cameraOffset);
+			visualInstance->draw(GlobalVariables::GetInstance().cameraOffset);
 		}
 	}
 }

@@ -8,8 +8,10 @@ public:
     }
 
     // Add your global variables here
-    int score = 0;
-    bool isPaused = false;
+    Vector2 cameraOffset = { 0, 0 };
+    Vector2 playerPosition = { 0, 0 };
+    int playerReference;
+    int scene = 1;
 
 private:
     GlobalVariables() {}  // Private constructor to prevent instantiation

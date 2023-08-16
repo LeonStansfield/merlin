@@ -132,8 +132,8 @@
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="MerlinClass.h" />
-    <ClInclude Include="MerlinResources.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
