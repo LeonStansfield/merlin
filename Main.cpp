@@ -6,14 +6,11 @@
 using namespace std;
 
 #include "raylib.h"
-#include "MerlinResources.h"
+#include "GlobalVariables.h"
 #include "MerlinClass.h"
 #include "player.h"
 
 // --- TODO ---
-// - Finish implementing scene loading/changing
-	// - Document the sceneManager stuff so I know exactly what to do when creating new scene files and adding new types of objects that can be spawned
-	// - Upgrade and document the tilemap so it easier to add multiple different types of tiles that can spawn many different types of objects
 // - Create a 'globals' script that stores global variables
 // - Use the new globals script to upgrade camera movement to not be so silly.
 //  - redo/improve collision resolution (currently it is silly)
@@ -29,14 +26,12 @@ Vector2 playerPosition = { 0, 0 };
 int playerReference;
 int scene = 1;
 
-SceneManager sceneManager;
-
 void ready(std::vector<GameObject*>& gameObjects)
 {
 	// declaring all objects in the scene and adding them to the array of game objects
 
-	sceneManager = SceneManager();
-	sceneManager.loadScene(gameObjects, "gameData/scenes/sceneOne.msd");
+	Tilemap tilemap = Tilemap("gameData/tilemap.txt", 8);
+	tilemap.spawnTiles(gameObjects);
 
 	// proccess game objects ready function
 	for (GameObject* gameObject : gameObjects)

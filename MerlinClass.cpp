@@ -6,6 +6,7 @@
 using namespace std;
 
 #include "raylib.h"
+#include "GlobalVariables.h"
 #include "MerlinClass.h"
 #include "player.h"
 
