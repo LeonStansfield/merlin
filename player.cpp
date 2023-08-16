@@ -21,14 +21,13 @@ Player::Player()
 		velocity = { 0, 0 };
 	}
 
-Player::Player(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity)
-	{
+Player::Player(Vector2 position, Vector2 size, int layer, string texturePath){
 		this->position = position;
 		this->size = size;
-		this->hasTexture = hasTexture;
-		this->color = color;
+		this->hasTexture = true;
+		this->color = WHITE;
 		this->texturePath = texturePath;
-		this->velocity = velocity;
+		this->velocity = Vector2{ 0, 0 };
 		this->layer = layer;
 	}
 
@@ -128,4 +127,6 @@ Player::Player(Vector2 position, Vector2 size, int layer, bool hasTexture, Color
 
 		// check for collisions
 		processCollisions(gameObjects);
+
+		cout << "Position: " << position.x << ", " << position.y << endl;
 	}

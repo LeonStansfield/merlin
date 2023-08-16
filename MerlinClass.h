@@ -137,13 +137,3 @@ public:
 
     void ready(std::vector<GameObject*>& gameObjects) override;
 };
-
-class SceneManager
-{
-public:
-    void loadScene(std::vector<GameObject*>& gameObjects, string filename);
-
-    void changeScene(std::vector<GameObject*>& gameObjects, string filename);
-
-    void createObject(std::vector<GameObject*>& gameObjects, string objectType, string objectName, std::vector<string>& objectData);
-};

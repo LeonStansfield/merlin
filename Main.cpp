@@ -12,10 +12,11 @@ using namespace std;
 
 // --- TODO ---
 // - Finish implementing scene loading/changing
-	// - Make it such that the player can be loaded with the tilemap (as well as ultimately, any other objects I have)
-	// - This requires setting up a forward reference for the player so its constructor can be called in the MerlinClass.cpp file
-	// - I also believe it would be helpful to have a 'globals' script with a bunch of globally accessible variables, 
-	// so I can easily set the player reference, scene, camera offset from anywhere
+	// - Document the sceneManager stuff so I know exactly what to do when creating new scene files and adding new types of objects that can be spawned
+	// - Upgrade and document the tilemap so it easier to add multiple different types of tiles that can spawn many different types of objects
+// - Create a 'globals' script that stores global variables
+// - Use the new globals script to upgrade camera movement to not be so silly.
+//  - redo/improve collision resolution (currently it is silly)
 // - Animated sprites
 
 // screen width and height variables
@@ -60,25 +61,6 @@ void update(std::vector<GameObject*>& gameObjects)
 	for (GameObject* gameObject : gameObjects)
 	{
 		gameObject->update(gameObjects);
-	}
-
-	// Basic scene change code
-	string sceneOne = "gameData/scenes/sceneOne.msd";
-	string sceneTwo = "gameData/scenes/sceneTwo.msd";
-	if (IsKeyPressed(KEY_E))
-	{
-		if (scene == 1)
-		{
-			// change scene to sceneTwo
-			sceneManager.changeScene(gameObjects, sceneTwo);
-			scene = 2;
-		}
-		else if (scene == 2)
-		{
-			// change scene to sceneOne
-			sceneManager.changeScene(gameObjects, sceneOne);
-			scene = 1;
-		}
 	}
 
 	// Determine the current room

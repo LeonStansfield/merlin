@@ -17,7 +17,7 @@ private:
 public:
 	Player();
 
-	Player(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity);
+	Player(Vector2 position, Vector2 size, int layer, string texturePath);
 
 	void update(vector<GameObject*> gameObjects) override;
 };
