@@ -11,10 +11,10 @@ using namespace std;
 #include "player.h"
 
 // --- TODO ---
-// - Create a 'globals' script that stores global variables
 // - Use the new globals script to upgrade camera movement to not be so silly.
-//  - redo/improve collision resolution (currently it is silly)
+// - redo / improve collision resolution (currently it is silly)
 // - Animated sprites
+// - Render layers / Z sorting
 
 // screen width and height variables
 const int screenWidth = 896;

@@ -10,7 +10,7 @@ public:
     // Add your global variables here
     Vector2 cameraOffset = { 0, 0 };
     Vector2 playerPosition = { 0, 0 };
-    int playerReference;
+    int playerReference = -1;
     int scene = 1;
 
 private:

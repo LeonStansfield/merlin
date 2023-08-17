@@ -265,18 +265,22 @@ void KinematicBody::resolveCollision(Collision& other)
 	if (moveUp)
 	{
 		position.y += overlapY;
+		velocity.y = 0;
 	}
 	else if (moveDown)
 	{
 		position.y -= overlapY;
+		velocity.y = 0;
 	}
 	else if (moveLeft)
 	{
 		position.x += overlapX;
+		velocity.x = 0;
 	}
 	else if (moveRight)
 	{
 		position.x -= overlapX;
+		velocity.x = 0;
 	}
 }
 
@@ -383,7 +387,7 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			}
 			case 3:
 			{
-				Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { static_cast<float>(tileSize), static_cast<float>(tileSize) }, 1, "assets/player.png");
+				Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { 6 , 8 }, 1, "gameData/Textures/player.png");
 				gameObjects.push_back(player);
 				GlobalVariables::GetInstance().playerReference = gameObjects.size() - 1;
 				break;

@@ -13,7 +13,7 @@ using namespace std;
 Player::Player()
 	{
 		position = { 0, 0 };
-		size = { 1, 1 };
+		size = { 8, 8 };
 		layer = 1;
 		hasTexture = false;
 		color = WHITE;
@@ -33,6 +33,7 @@ Player::Player(Vector2 position, Vector2 size, int layer, string texturePath){
 
 	void Player::update(vector<GameObject*> gameObjects)
 	{
+		/*
 		// check if the player is grounded
 		if (pget({ position.x + size.x / 2, position.y + size.y + 1 }, 1, gameObjects))
 		{
@@ -122,11 +123,26 @@ Player::Player(Vector2 position, Vector2 size, int layer, string texturePath){
 		{
 			velocity.y = jumpVelocity;
 		}
+		*/
+
+		if (IsKeyDown(KEY_A))
+		{
+			velocity.x -= 0.3;
+		}
+		else if (IsKeyDown(KEY_D))
+		{
+			velocity.x += 0.3;
+		}
+		if (IsKeyDown(KEY_S)) {
+			velocity.y += 0.3;
+		}
+		else if (IsKeyDown(KEY_W))
+		{
+			velocity.y -= 0.3;
+		}
 
 		move();
 
 		// check for collisions
 		processCollisions(gameObjects);
-
-		cout << "Position: " << position.x << ", " << position.y << endl;
 	}
