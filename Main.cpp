@@ -14,7 +14,6 @@ using namespace std;
 // - Use the new globals script to upgrade camera movement to not be so silly.
 // - redo / improve collision resolution (currently it is silly)
 // - Animated sprites
-// - Render layers / Z sorting
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -77,9 +76,18 @@ void draw(std::vector<GameObject*>& gameObjects)
 		// for all objects that are, or inherit from visual instance class
 		for (GameObject* gameObject : gameObjects)
 		{
+			// determine what room the object is in
+			int objectRoomX = gameObject->getPosition().x / gameScreenWidth;
+			int objectRoomY = gameObject->getPosition().y / gameScreenHeight;
+			bool isInCurrentRoom = true;
+			if ((GlobalVariables::GetInstance().cameraOffset.x / 128) != objectRoomX || (GlobalVariables::GetInstance().cameraOffset.y / 128) != objectRoomY)
+			{
+				isInCurrentRoom = false;
+			}
+
 			// Check if the object is visible, is in the current render layer and is a visual instance or a subclass of visual instance
 			VisualInstance* visualInstance = dynamic_cast<VisualInstance*>(gameObject);
-			if (visualInstance != nullptr && visualInstance->getVisible() && visualInstance->getRenderLayer() == renderLayer)
+			if (visualInstance != nullptr && visualInstance->getVisible() && visualInstance->getRenderLayer() == renderLayer && isInCurrentRoom)
 			{
 				visualInstance->draw(GlobalVariables::GetInstance().cameraOffset);
 			}
