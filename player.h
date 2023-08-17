@@ -6,6 +6,8 @@
 #include "raylib.h"
 #include "MerlinClass.h"
 
+// Player
+// Player is a kinematic body that will react to player inputs
 class Player : public KinematicBody
 {
 private:

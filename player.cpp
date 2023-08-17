@@ -14,7 +14,7 @@ Player::Player()
 	{
 		position = { 0, 0 };
 		size = { 8, 8 };
-		layer = 1;
+		collisionLayer = 1;
 		hasTexture = false;
 		color = WHITE;
 		texturePath = "";
@@ -28,7 +28,7 @@ Player::Player(Vector2 position, Vector2 size, int layer, string texturePath){
 		this->color = WHITE;
 		this->texturePath = texturePath;
 		this->velocity = Vector2{ 0, 0 };
-		this->layer = layer;
+		this->collisionLayer = layer;
 	}
 
 	void Player::update(vector<GameObject*> gameObjects)

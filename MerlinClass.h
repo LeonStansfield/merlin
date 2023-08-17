@@ -8,12 +8,13 @@
 
 #include "raylib.h"
 
+// Game Object
+// GameObject is the base class for all game objects, holds a position
 class GameObject
 {
 public:
     virtual ~GameObject() {} // virtual destructor
     Vector2 position;
-    int layer;
 
     GameObject();
 
@@ -30,6 +31,8 @@ public:
     virtual void end();
 };
 
+// Visual Intance
+// Draws a colored box or texture at a position, size, and render layer
 class VisualInstance : public GameObject
 {
 public:
@@ -69,7 +72,36 @@ public:
     void end() override;
 };
 
+// Animated Sprite
+// Draws an animated sprite sheet at a position, size, and render layer
+class AnimatedSprite : public GameObject
+{
+    public:
+    bool visible = true;
+    Vector2 size;
+    int renderLayer;
+    string spritePath;
+    Texture2D texture;
+    int frameCount;
+    int currentFrame;
+    int frameSpeed;
+    int frameCounter;
+    bool loop;
+    bool playing;
 
+    AnimatedSprite();
+
+    AnimatedSprite(Vector2 position, Vector2 size, string spritePath, int frameCount, int frameSpeed, bool loop);
+
+    void ready(std::vector<GameObject*>& gameObjects) override;
+
+    void draw(Vector2 camera_offset);
+
+    void end() override;
+};
+
+// Collision
+// A collision box that kinematic bodies on the same layer will collide with
 class Collision : public VisualInstance
 {
 
@@ -91,7 +123,8 @@ public:
     bool pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects);
 };
 
-
+// Kinematic Body
+// A collision box that can move at its velocity and resolve collision with other collision boxes
 class KinematicBody : public Collision
 {
 public:
@@ -115,7 +148,8 @@ public:
     void update(vector<GameObject*> gameObjects) override;
 };
 
-
+// Tile
+// A collision box that is spawned by the tilemap class
 class Tile : public Collision
 {
     // tile class, a tile is spawned by the tilemap class and is a collision object.
@@ -127,6 +161,8 @@ public:
 // Foreward declarations for classes that can be spawned by the tilemap that are not declared in MerlinClass.h
 class player;
 
+// Tilemap
+// Spawns tiles and other objects from a text file
 class Tilemap : public GameObject
 {
 private:

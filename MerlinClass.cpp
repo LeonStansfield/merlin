@@ -14,7 +14,6 @@ using namespace std;
 GameObject::GameObject()
 {
 	position = { 0, 0 };
-	layer = 0;
 }
 
 GameObject::GameObject(Vector2 position)
@@ -46,7 +45,6 @@ void GameObject::end()
 }
 
 // Visual Instance
-
 VisualInstance::VisualInstance()
 {
 	position = { 0.0, 0.0 };
@@ -141,6 +139,40 @@ void VisualInstance::end()
 	delete this;
 }
 
+
+// Animated Sprite
+
+AnimatedSprite::AnimatedSprite()
+{
+	position = { 0.0, 0.0 };
+	size = { 1, 1 };
+	visible = true;
+	renderLayer = 0;
+	spritePath = "";
+	frameCount = 1;
+	currentFrame = 0;
+	frameSpeed = 1;
+	frameCounter = 0;
+	loop = true;
+	playing = true;
+	
+}
+
+AnimatedSprite::AnimatedSprite(Vector2 position, Vector2 size, string spritePath, int frameCount, int frameSpeed, bool loop) 
+{
+	this->position = position;
+	this->size = size;
+	this->visible = true;
+	this->renderLayer = 0;
+	this->spritePath = spritePath;
+	this->frameCount = frameCount;
+	this->frameSpeed = frameSpeed;
+	this->loop = loop;
+	this->playing = true;
+	this->currentFrame = 0;
+	this->frameCounter = 0;
+}
+
 // Collision
 
 Collision::Collision()
@@ -220,7 +252,7 @@ KinematicBody::KinematicBody(Vector2 position, Vector2 size, int collisionLayer,
 	this->position = position;
 	this->size = size;
 	this->renderLayer = 0;
-	this->collisionLayer = layer;
+	this->collisionLayer = collisionLayer;
 	this->hasTexture = hasTexture;
 	this->color = color;
 	this->texturePath = texturePath;
