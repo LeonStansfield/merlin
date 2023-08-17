@@ -11,8 +11,7 @@ using namespace std;
 #include "player.h"
 
 // --- TODO ---
-// - Use the new globals script to upgrade camera movement to not be so silly.
-// - redo / improve collision resolution (currently it is silly)
+// - redo / improve collision resolution
 // - Animated sprites
 
 // screen width and height variables
@@ -76,7 +75,7 @@ void draw(std::vector<GameObject*>& gameObjects)
 		// for all objects that are, or inherit from visual instance class
 		for (GameObject* gameObject : gameObjects)
 		{
-			// determine what room the object is in
+			// determine if the object is inside the current room
 			int objectRoomX = gameObject->getPosition().x / gameScreenWidth;
 			int objectRoomY = gameObject->getPosition().y / gameScreenHeight;
 			bool isInCurrentRoom = true;
