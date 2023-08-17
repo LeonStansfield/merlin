@@ -71,14 +71,18 @@ void update(std::vector<GameObject*>& gameObjects)
 
 void draw(std::vector<GameObject*>& gameObjects)
 {
-	// draw all objects that are, or inherit from visual instance class
-	for (GameObject* gameObject : gameObjects)
-	{
-		// Check if the object is visible and is a visual instance or a subclass of visual instance
-		VisualInstance* visualInstance = dynamic_cast<VisualInstance*>(gameObject);
-		if (visualInstance != nullptr && visualInstance->getVisible())
+	int renderLayer = 0;
+	// For each render layer
+	for (renderLayer = 0; renderLayer < 10; renderLayer++) {
+		// for all objects that are, or inherit from visual instance class
+		for (GameObject* gameObject : gameObjects)
 		{
-			visualInstance->draw(GlobalVariables::GetInstance().cameraOffset);
+			// Check if the object is visible, is in the current render layer and is a visual instance or a subclass of visual instance
+			VisualInstance* visualInstance = dynamic_cast<VisualInstance*>(gameObject);
+			if (visualInstance != nullptr && visualInstance->getVisible() && visualInstance->getRenderLayer() == renderLayer)
+			{
+				visualInstance->draw(GlobalVariables::GetInstance().cameraOffset);
+			}
 		}
 	}
 }

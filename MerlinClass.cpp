@@ -51,6 +51,7 @@ VisualInstance::VisualInstance()
 {
 	position = { 0.0, 0.0 };
 	size = { 1, 1 };
+	renderLayer = 0;
 	hasTexture = false;
 	color = WHITE;
 	texturePath = "";
@@ -60,6 +61,7 @@ VisualInstance::VisualInstance(Vector2 position, Vector2 size, bool hasTexture, 
 {
 	this->position = position;
 	this->size = size;
+	this->renderLayer = 0;
 	this->hasTexture = hasTexture;
 	this->color = color;
 	this->texturePath = texturePath;
@@ -73,6 +75,16 @@ Vector2 VisualInstance::getSize()
 void VisualInstance::setSize(Vector2 size)
 {
 	this->size = size;
+}
+
+int VisualInstance::getRenderLayer()
+{
+	return renderLayer;
+}
+
+void VisualInstance::setRenderLayer(int renderLayer)
+{
+	this->renderLayer = renderLayer;
 }
 
 Color VisualInstance::getColor()
@@ -135,17 +147,19 @@ Collision::Collision()
 {
 	position = { 0.0, 0.0 };
 	size = { 1, 1 };
-	layer = 1;
+	renderLayer = 0;
+	collisionLayer = 1;
 	hasTexture = false;
 	color = MAROON;
 	texturePath = "";
 }
 
-Collision::Collision(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath)
+Collision::Collision(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath)
 {
 	this->position = position;
 	this->size = size;
-	this->layer = layer;
+	this->renderLayer = 0;
+	this->collisionLayer = collisionLayer;
 	this->hasTexture = hasTexture;
 	this->color = color;
 	this->texturePath = texturePath;
@@ -163,12 +177,12 @@ void Collision::drawCollisionBox()
 
 void Collision::setLayer(int layer)
 {
-	this->layer = layer;
+	this->collisionLayer = layer;
 }
 
 int Collision::getLayer()
 {
-	return layer;
+	return collisionLayer;
 }
 
 bool Collision::pget(Vector2 pos, int layer, const std::vector<GameObject*>& gameObjects)
@@ -193,18 +207,20 @@ KinematicBody::KinematicBody()
 {
 	position = { 0, 0 };
 	size = { 1, 1 };
-	layer = 1;
+	renderLayer = 0;
+	collisionLayer = 1;
 	hasTexture = false;
 	color = WHITE;
 	texturePath = "";
 	velocity = { 0, 0 };
 }
 
-KinematicBody::KinematicBody(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity)
+KinematicBody::KinematicBody(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath, Vector2 velocity)
 {
 	this->position = position;
 	this->size = size;
-	this->layer = layer;
+	this->renderLayer = 0;
+	this->collisionLayer = layer;
 	this->hasTexture = hasTexture;
 	this->color = color;
 	this->texturePath = texturePath;
@@ -300,7 +316,7 @@ void KinematicBody::processCollisions(vector<GameObject*> gameObjects)
 		if (collision != nullptr && collision->checkCollision(*this))
 		{
 			// if this object is on the same layer as the other object, resolve the collision
-			if ((collision->layer) == this->layer)
+			if ((collision->collisionLayer) == this->collisionLayer)
 			{
 				resolveCollision(*collision);
 				continue;
@@ -331,11 +347,12 @@ void KinematicBody::update(vector<GameObject*> gameObjects)
 
 // Tile
 
-Tile::Tile(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath)
+Tile::Tile(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath)
 {
 	this->position = position;
 	this->size = size;
-	this->layer = layer;
+	this->renderLayer = 0;
+	this->collisionLayer = collisionLayer;
 	this->hasTexture = hasTexture;
 	this->color = color;
 	this->texturePath = texturePath;
@@ -388,6 +405,7 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			case 3:
 			{
 				Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { 6 , 8 }, 1, "gameData/Textures/player.png");
+				player->setRenderLayer(3);
 				gameObjects.push_back(player);
 				GlobalVariables::GetInstance().playerReference = gameObjects.size() - 1;
 				break;

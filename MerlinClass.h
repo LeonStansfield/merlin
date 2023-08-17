@@ -35,6 +35,7 @@ class VisualInstance : public GameObject
 public:
     bool visible = true;
     Vector2 size;
+    int renderLayer;
     bool hasTexture;
     Color color;
     string texturePath;
@@ -43,10 +44,14 @@ public:
     VisualInstance();
 
     VisualInstance(Vector2 position, Vector2 size, bool hasTexture, Color color, string texturePath);
-
+    
     Vector2 getSize();
 
     void setSize(Vector2 size);
+
+    int getRenderLayer();
+
+    void setRenderLayer(int renderLayer);
 
     Color getColor();
 
@@ -69,11 +74,11 @@ class Collision : public VisualInstance
 {
 
 public:
-    int layer = 1;
+    int collisionLayer = 1;
 
     Collision();
 
-    Collision(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath);
+    Collision(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath);
 
     bool checkCollision(Collision other);
 
@@ -94,7 +99,7 @@ public:
 
     KinematicBody();
 
-    KinematicBody(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath, Vector2 velocity);
+    KinematicBody(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath, Vector2 velocity);
 
     Vector2 getVelocity();
 
@@ -116,7 +121,7 @@ class Tile : public Collision
     // tile class, a tile is spawned by the tilemap class and is a collision object.
 public:
     // Constructor with arguments
-    Tile(Vector2 position, Vector2 size, int layer, bool hasTexture, Color color, string texturePath);
+    Tile(Vector2 position, Vector2 size, int collisionLayer, bool hasTexture, Color color, string texturePath);
 };
 
 // Foreward declarations for classes that can be spawned by the tilemap that are not declared in MerlinClass.h
