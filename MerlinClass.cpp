@@ -173,6 +173,55 @@ AnimatedSprite::AnimatedSprite(Vector2 position, Vector2 size, string spritePath
 	this->frameCounter = 0;
 }
 
+void AnimatedSprite::ready(std::vector<GameObject*>& gameObjects)
+{
+	texture = LoadTexture(spritePath.c_str());
+}
+
+void AnimatedSprite::update(std::vector<GameObject*> gameObjects)
+{
+	if (playing)
+	{
+		frameCounter++;
+		if (frameCounter >= frameSpeed)
+		{
+			frameCounter = 0;
+			currentFrame++;
+			if (currentFrame >= frameCount)
+			{
+				if (loop)
+				{
+					currentFrame = 0;
+				}
+				else
+				{
+					currentFrame = frameCount - 1;
+					playing = false;
+				}
+			}
+		}
+	}
+}
+
+void AnimatedSprite::draw(Vector2 camera_offset)
+{	
+	if (!visible)
+		return;
+	int drawPositionX = position.x - camera_offset.x;
+	int drawPositionY = position.y - camera_offset.y;
+	Rectangle sourceRec = { (float)currentFrame * (float)texture.width / (float)frameCount, 0, (float)texture.width / (float)frameCount, (float)texture.height };
+	Rectangle destRec = { (float)drawPositionX, (float)drawPositionY, (float)size.x, (float)size.y };
+	DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0, WHITE);
+}
+
+void AnimatedSprite::end()
+{
+	UnloadTexture(texture);
+	delete this;
+}
+
+
+
 // Collision
 
 Collision::Collision()

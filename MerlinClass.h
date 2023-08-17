@@ -76,9 +76,9 @@ public:
 // Draws an animated sprite sheet at a position, size, and render layer
 class AnimatedSprite : public GameObject
 {
-    public:
-    bool visible = true;
+private:
     Vector2 size;
+    bool visible = true;
     int renderLayer;
     string spritePath;
     Texture2D texture;
@@ -89,11 +89,27 @@ class AnimatedSprite : public GameObject
     bool loop;
     bool playing;
 
+public:
     AnimatedSprite();
 
     AnimatedSprite(Vector2 position, Vector2 size, string spritePath, int frameCount, int frameSpeed, bool loop);
 
+    Vector2 getSize();
+
+    void setSize(Vector2 size);
+
+    int getRenderLayer();
+
+    void setRenderLayer(int renderLayer);
+
+    void setVisible(bool visibility);
+
+    bool getVisible();
+    
+
     void ready(std::vector<GameObject*>& gameObjects) override;
+
+    void update(vector<GameObject*> gameObjects) override;
 
     void draw(Vector2 camera_offset);
 
