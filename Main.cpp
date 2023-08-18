@@ -27,6 +27,9 @@ void ready(std::vector<GameObject*>& gameObjects)
 	Tilemap tilemap = Tilemap("gameData/tilemap.txt", 8);
 	tilemap.spawnTiles(gameObjects);
 
+	//AnimatedSprite animatedSprite = AnimatedSprite({ 32, 32 }, { 8, 8 }, "gameData/Textures/anim_test.png", 6, 0.1, true);
+	//gameObjects.push_back(&animatedSprite);
+
 	// proccess game objects ready function
 	for (GameObject* gameObject : gameObjects)
 	{
