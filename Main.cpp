@@ -11,8 +11,8 @@ using namespace std;
 #include "player.h"
 
 // --- TODO ---
-// - redo / improve collision resolution
-// - Animated sprites
+// - Finish Animated Sprites
+// - Correctly implement animated sprites so it fits all other class types.
 
 // screen width and height variables
 const int screenWidth = 896;
@@ -26,9 +26,6 @@ void ready(std::vector<GameObject*>& gameObjects)
 
 	Tilemap tilemap = Tilemap("gameData/tilemap.txt", 8);
 	tilemap.spawnTiles(gameObjects);
-
-	//AnimatedSprite animatedSprite = AnimatedSprite({ 32, 32 }, { 8, 8 }, "gameData/Textures/anim_test.png", 6, 0.1, true);
-	//gameObjects.push_back(&animatedSprite);
 
 	// proccess game objects ready function
 	for (GameObject* gameObject : gameObjects)

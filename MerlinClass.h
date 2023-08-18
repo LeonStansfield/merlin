@@ -72,48 +72,29 @@ public:
     void end() override;
 };
 
-// Animated Sprite
-// Draws an animated sprite sheet at a position, size, and render layer
-class AnimatedSprite : public GameObject
-{
-private:
-    Vector2 size;
-    bool visible = true;
-    int renderLayer;
-    string spritePath;
-    Texture2D texture;
-    int frameCount;
-    int currentFrame;
-    int frameSpeed;
-    int frameCounter;
-    bool loop;
-    bool playing;
-
+class AnimatedSprite : public GameObject {
 public:
-    AnimatedSprite();
+    AnimatedSprite(const std::string& spritePath, int frameWidth, int frameHeight, int numFrames, float frameRate);
 
-    AnimatedSprite(Vector2 position, Vector2 size, string spritePath, int frameCount, int frameSpeed, bool loop);
+    int getFrameWidth();
 
-    Vector2 getSize();
-
-    void setSize(Vector2 size);
-
-    int getRenderLayer();
-
-    void setRenderLayer(int renderLayer);
-
-    void setVisible(bool visibility);
-
-    bool getVisible();
-    
-
-    void ready(std::vector<GameObject*>& gameObjects) override;
+    int getFrameHeight();
 
     void update(vector<GameObject*> gameObjects) override;
 
     void draw(Vector2 camera_offset);
 
     void end() override;
+
+private:
+    bool visible;
+    Texture2D sprite;
+    int frameWidth;
+    int frameHeight;
+    int numFrames;
+    float frameRate;
+    int currentFrame;
+    float frameTimer;
 };
 
 // Collision

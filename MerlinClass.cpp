@@ -142,84 +142,54 @@ void VisualInstance::end()
 
 // Animated Sprite
 
-AnimatedSprite::AnimatedSprite()
+AnimatedSprite::AnimatedSprite(const std::string& spritePath, int frameWidth, int frameHeight, int numFrames, float frameRate)
 {
-	position = { 0.0, 0.0 };
-	size = { 1, 1 };
-	visible = true;
-	renderLayer = 0;
-	spritePath = "";
-	frameCount = 1;
-	currentFrame = 0;
-	frameSpeed = 1;
-	frameCounter = 0;
-	loop = true;
-	playing = true;
-	
-}
-
-AnimatedSprite::AnimatedSprite(Vector2 position, Vector2 size, string spritePath, int frameCount, int frameSpeed, bool loop) 
-{
-	this->position = position;
-	this->size = size;
 	this->visible = true;
-	this->renderLayer = 0;
-	this->spritePath = spritePath;
-	this->frameCount = frameCount;
-	this->frameSpeed = frameSpeed;
-	this->loop = loop;
-	this->playing = true;
-	this->currentFrame = 0;
-	this->frameCounter = 0;
+	this -> sprite = LoadTexture(spritePath.c_str());
+	this -> frameWidth = frameWidth;
+	this -> frameHeight = frameHeight;
+	this -> numFrames = numFrames;
+	this -> frameRate = frameRate;
+	this -> currentFrame = 0;
+	this -> frameTimer = 0.0f;
 }
 
-void AnimatedSprite::ready(std::vector<GameObject*>& gameObjects)
+int AnimatedSprite::getFrameWidth()
 {
-	texture = LoadTexture(spritePath.c_str());
+	return frameWidth;
 }
 
-void AnimatedSprite::update(std::vector<GameObject*> gameObjects)
+int AnimatedSprite::getFrameHeight()
 {
-	if (playing)
+	return frameHeight;
+}
+
+void AnimatedSprite::update(vector<GameObject*> gameObjects)
+{
+	frameTimer += 1;
+	if (frameTimer >= 1.0f / frameRate) 
 	{
-		frameCounter++;
-		if (frameCounter >= frameSpeed)
-		{
-			frameCounter = 0;
-			currentFrame++;
-			if (currentFrame >= frameCount)
-			{
-				if (loop)
-				{
-					currentFrame = 0;
-				}
-				else
-				{
-					currentFrame = frameCount - 1;
-					playing = false;
-				}
-			}
-		}
+		frameTimer = 0.0f;
+		currentFrame = (currentFrame + 1) % numFrames;
 	}
 }
 
 void AnimatedSprite::draw(Vector2 camera_offset)
-{	
+{
 	if (!visible)
 		return;
-	int drawPositionX = position.x - camera_offset.x;
-	int drawPositionY = position.y - camera_offset.y;
-	Rectangle sourceRec = { (float)currentFrame * (float)texture.width / (float)frameCount, 0, (float)texture.width / (float)frameCount, (float)texture.height };
-	Rectangle destRec = { (float)drawPositionX, (float)drawPositionY, (float)size.x, (float)size.y };
-	DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0, WHITE);
+	float drawPositionX = position.x - camera_offset.x;
+	float drawPositionY = position.y - camera_offset.y;
+
+	Rectangle sourceRect = { static_cast<float>(currentFrame * frameWidth), 0, static_cast<float>(frameWidth), static_cast<float>(frameHeight) };
+	DrawTextureRec(sprite, sourceRect, Vector2{ drawPositionX, drawPositionY }, WHITE);
 }
 
-void AnimatedSprite::end()
+void AnimatedSprite::end() 
 {
-	UnloadTexture(texture);
+	UnloadTexture(sprite);
 	delete this;
 }
-
 
 
 // Collision
