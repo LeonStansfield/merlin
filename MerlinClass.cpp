@@ -142,6 +142,18 @@ void VisualInstance::end()
 
 // Animated Sprite
 
+AnimatedSprite::AnimatedSprite() 
+{
+	this->visible = true;
+	this->sprite = LoadTexture("");
+	this->frameWidth = 8;
+	this->frameHeight = 8;
+	this->numFrames = 1;
+	this->frameRate = 1;
+	this->currentFrame = 0;
+	this->frameTimer = 0.0f;
+}
+
 AnimatedSprite::AnimatedSprite(const std::string& spritePath, int frameWidth, int frameHeight, int numFrames, float frameRate)
 {
 	this->visible = true;
@@ -154,9 +166,39 @@ AnimatedSprite::AnimatedSprite(const std::string& spritePath, int frameWidth, in
 	this -> frameTimer = 0.0f;
 }
 
+void AnimatedSprite::setVisible(bool visible) 
+{
+	this->visible = visible;
+}
+
+bool AnimatedSprite::getVisible()
+{
+	return this->visible;
+}
+
+void AnimatedSprite::setRenderLayer(int layer)
+{
+	this->renderLayer = layer;
+}
+
+int AnimatedSprite::getRenderLayer()
+{
+	return this->renderLayer;
+}
+
+void AnimatedSprite::setFrameWidth(int frameWidth)
+{
+	this->frameWidth = frameWidth;
+}
+
 int AnimatedSprite::getFrameWidth()
 {
 	return frameWidth;
+}
+
+void AnimatedSprite::setFrameHeight(int frameHeight)
+{
+	this->frameHeight = frameHeight;
 }
 
 int AnimatedSprite::getFrameHeight()
@@ -456,9 +498,17 @@ void Tilemap::spawnTiles(std::vector<GameObject*>& gameObjects)
 			case 3:
 			{
 				Player* player = new Player({ static_cast<float>(x) * tileSize, static_cast<float>(y) * tileSize }, { 6 , 8 }, 1, "gameData/Textures/player.png");
-				player->setRenderLayer(3);
+				player->setRenderLayer(1);
 				gameObjects.push_back(player);
 				GlobalVariables::GetInstance().playerReference = gameObjects.size() - 1;
+				break;
+			}
+			case 4:
+			{
+				AnimatedSprite* animatedSprite = new AnimatedSprite("gameData/Textures/anim_test.png", 8, 8, 6, 10.0f);
+				animatedSprite->setRenderLayer(1);
+				gameObjects.push_back(animatedSprite);
+				cout << "animated sprite created" << endl;
 				break;
 			}
 			default:

@@ -74,27 +74,41 @@ public:
 
 class AnimatedSprite : public GameObject {
 public:
-    AnimatedSprite(const std::string& spritePath, int frameWidth, int frameHeight, int numFrames, float frameRate);
-
-    int getFrameWidth();
-
-    int getFrameHeight();
-
-    void update(vector<GameObject*> gameObjects) override;
-
-    void draw(Vector2 camera_offset);
-
-    void end() override;
-
-private:
     bool visible;
     Texture2D sprite;
+    int renderLayer;
     int frameWidth;
     int frameHeight;
     int numFrames;
     float frameRate;
     int currentFrame;
     float frameTimer;
+
+    AnimatedSprite();
+
+    AnimatedSprite(const std::string& spritePath, int frameWidth, int frameHeight, int numFrames, float frameRate);
+
+    bool getVisible();
+
+    void setVisible(bool visible);
+
+    int getRenderLayer();
+
+    void setRenderLayer(int layer);
+
+    int getFrameWidth();
+
+    void setFrameWidth(int frameWidth);
+
+    int getFrameHeight();
+
+    void setFrameHeight(int frameHeight);
+
+    void update(vector<GameObject*> gameObjects) override;
+
+    void draw(Vector2 camera_offset);
+
+    void end() override;
 };
 
 // Collision

@@ -128,6 +128,8 @@ int main()
 		BeginTextureMode(target); // begin drawing to render texture
 		ClearBackground(WHITE); // clear render texture
 		draw(gameObjects); // draw game objects
+
+
 		EndTextureMode(); // end drawing to render texture
 
 		// draw render texture to screen
