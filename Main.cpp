@@ -84,11 +84,19 @@ void draw(std::vector<GameObject*>& gameObjects)
 				isInCurrentRoom = false;
 			}
 
-			// Check if the object is visible, is in the current render layer and is a visual instance or a subclass of visual instance
+
+			// Check if the object is visible, is in the current render layer, and is a visual instance or a subclass of visual instance
 			VisualInstance* visualInstance = dynamic_cast<VisualInstance*>(gameObject);
 			if (visualInstance != nullptr && visualInstance->getVisible() && visualInstance->getRenderLayer() == renderLayer && isInCurrentRoom)
 			{
 				visualInstance->draw(GlobalVariables::GetInstance().cameraOffset);
+			}
+
+			// Check if the object is an AnimatedSprite and meets the rendering criteria
+			AnimatedSprite* animatedSprite = dynamic_cast<AnimatedSprite*>(gameObject);
+			if (animatedSprite != nullptr && animatedSprite->getVisible() && animatedSprite->getRenderLayer() == renderLayer && isInCurrentRoom)
+			{
+				animatedSprite->draw(GlobalVariables::GetInstance().cameraOffset);
 			}
 		}
 	}
