@@ -64,7 +64,7 @@ public:
 
     bool getVisible();
 
-    // overide ready() to load textures
+    // Overide ready() to load textures
     void ready(std::vector<GameObject*>& gameObjects) override;
 
     void draw(Vector2 camera_offset);
@@ -72,6 +72,8 @@ public:
     void end() override;
 };
 
+// Animated sprite
+// Draws a texture2D at a position, size, and render layer, and animates it
 class AnimatedSprite : public GameObject {
 public:
     bool visible;
