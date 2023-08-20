@@ -11,8 +11,7 @@ using namespace std;
 #include "player.h"
 
 // --- TODO ---
-// - Finish Animated Sprites
-// - Correctly implement animated sprites so it fits all other class types.
+
 
 // screen width and height variables
 const int screenWidth = 896;
